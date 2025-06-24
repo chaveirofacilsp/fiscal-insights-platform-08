@@ -4,8 +4,11 @@ import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import { Progress } from "@/components/ui/progress";
+import { useAdmin } from "@/contexts/AdminContext";
 
 const RightSidebar = () => {
+  const { indices } = useAdmin();
+
   const ferramentas = [
     { nome: "Calculadora de INSS", icone: Calculator, popular: true },
     { nome: "Simulador Simples Nacional", icone: Percent, popular: true },
@@ -19,14 +22,6 @@ const RightSidebar = () => {
     { titulo: "Guia SPED Fiscal", tipo: "PDF", tamanho: "1.8MB", premium: false },
     { titulo: "Tabela de Códigos NCM", tipo: "Excel", tamanho: "3.2MB", premium: true },
     { titulo: "Modelos de DARF", tipo: "Word", tamanho: "0.5MB", premium: false }
-  ];
-
-  const indices = [
-    { nome: "SELIC", valor: "10.75%", variacao: "+0.25", tipo: "alta" },
-    { nome: "IPCA", valor: "4.62%", variacao: "-0.15", tipo: "baixa" },
-    { nome: "IGP-M", valor: "3.18%", variacao: "+0.08", tipo: "alta" },
-    { nome: "INPC", valor: "4.77%", variacao: "+0.12", tipo: "alta" },
-    { nome: "CDI", valor: "10.65%", variacao: "0.00", tipo: "neutro" }
   ];
 
   return (
@@ -94,7 +89,7 @@ const RightSidebar = () => {
         </CardContent>
       </Card>
 
-      {/* Índices Econômicos */}
+      {/* Índices Econômicos - Agora dinâmicos */}
       <Card>
         <CardHeader className="pb-3">
           <CardTitle className="flex items-center space-x-2 text-slate-800">
@@ -121,7 +116,7 @@ const RightSidebar = () => {
           ))}
           <div className="pt-2 border-t border-slate-200">
             <span className="text-xs text-slate-600">
-              Atualizado em: {new Date().toLocaleDateString('pt-BR')}
+              Atualizado em: {indices.length > 0 ? new Date(indices[0].ultimaAtualizacao).toLocaleDateString('pt-BR') : 'N/A'}
             </span>
           </div>
         </CardContent>

@@ -1,18 +1,22 @@
 
-import { Users, FileText, Settings, BarChart3, Calendar, Book, ShoppingCart, MessageSquare, ArrowLeft } from "lucide-react";
+import { Users, FileText, Settings, BarChart3, Calendar, Book, ShoppingCart, MessageSquare, ArrowLeft, TrendingUp } from "lucide-react";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table";
 import { Link } from "react-router-dom";
+import { AdminProvider, useAdmin } from "@/contexts/AdminContext";
+import IndicesEconomicosManager from "./admin/IndicesEconomicosManager";
 
-const AdminPanel = () => {
+const AdminPanelContent = () => {
+  const { artigos, indices, linksExternos } = useAdmin();
+
   const stats = [
     { label: "Usuários Ativos", value: "2,847", change: "+12%", icon: Users, color: "text-blue-600" },
-    { label: "Artigos Publicados", value: "1,234", change: "+8%", icon: FileText, color: "text-emerald-600" },
-    { label: "Cursos Ativos", value: "47", change: "+3%", icon: Book, color: "text-purple-600" },
-    { label: "Vendas do Mês", value: "R$ 45.2k", change: "+18%", icon: ShoppingCart, color: "text-orange-600" }
+    { label: "Artigos Publicados", value: artigos.length.toString(), change: "+8%", icon: FileText, color: "text-emerald-600" },
+    { label: "Índices Monitorados", value: indices.length.toString(), change: "+3%", icon: TrendingUp, color: "text-purple-600" },
+    { label: "Links Externos", value: linksExternos.length.toString(), change: "+18%", icon: Book, color: "text-orange-600" }
   ];
 
   const recentUsers = [
@@ -20,13 +24,6 @@ const AdminPanel = () => {
     { nome: "Maria Santos", email: "maria@email.com", plano: "Básico", status: "Ativo" },
     { nome: "Pedro Costa", email: "pedro@email.com", plano: "Premium", status: "Pendente" },
     { nome: "Ana Oliveira", email: "ana@email.com", plano: "Corporativo", status: "Ativo" }
-  ];
-
-  const recentContent = [
-    { titulo: "IN RFB nº 2.201/2024", tipo: "Legislação", autor: "Admin", status: "Publicado" },
-    { titulo: "Curso eSocial Avançado", tipo: "Curso", autor: "Prof. Silva", status: "Rascunho" },
-    { titulo: "Manual SPED Fiscal", tipo: "Publicação", autor: "Equipe", status: "Revisão" },
-    { titulo: "Calculadora INSS", tipo: "Ferramenta", autor: "Dev Team", status: "Publicado" }
   ];
 
   return (
@@ -79,7 +76,7 @@ const AdminPanel = () => {
 
         {/* Main Content */}
         <Tabs defaultValue="usuarios" className="w-full">
-          <TabsList className="grid w-full grid-cols-6 mb-6">
+          <TabsList className="grid w-full grid-cols-7 mb-6">
             <TabsTrigger value="usuarios" className="flex items-center space-x-2">
               <Users className="w-4 h-4" />
               <span>Usuários</span>
@@ -87,6 +84,10 @@ const AdminPanel = () => {
             <TabsTrigger value="conteudo" className="flex items-center space-x-2">
               <FileText className="w-4 h-4" />
               <span>Conteúdo</span>
+            </TabsTrigger>
+            <TabsTrigger value="indices" className="flex items-center space-x-2">
+              <TrendingUp className="w-4 h-4" />
+              <span>Índices</span>
             </TabsTrigger>
             <TabsTrigger value="cursos" className="flex items-center space-x-2">
               <Book className="w-4 h-4" />
@@ -173,24 +174,28 @@ const AdminPanel = () => {
                   <TableHeader>
                     <TableRow>
                       <TableHead>Título</TableHead>
-                      <TableHead>Tipo</TableHead>
+                      <TableHead>Categoria</TableHead>
                       <TableHead>Autor</TableHead>
                       <TableHead>Status</TableHead>
+                      <TableHead>Data</TableHead>
                       <TableHead>Ações</TableHead>
                     </TableRow>
                   </TableHeader>
                   <TableBody>
-                    {recentContent.map((content, index) => (
+                    {artigos.map((artigo, index) => (
                       <TableRow key={index}>
-                        <TableCell className="font-medium">{content.titulo}</TableCell>
+                        <TableCell className="font-medium">{artigo.titulo}</TableCell>
                         <TableCell>
-                          <Badge variant="outline">{content.tipo}</Badge>
+                          <Badge variant="outline">{artigo.categoria}</Badge>
                         </TableCell>
-                        <TableCell>{content.autor}</TableCell>
+                        <TableCell>{artigo.autor}</TableCell>
                         <TableCell>
-                          <Badge variant={content.status === "Publicado" ? "default" : "secondary"}>
-                            {content.status}
+                          <Badge variant={artigo.status === "publicado" ? "default" : "secondary"}>
+                            {artigo.status}
                           </Badge>
+                        </TableCell>
+                        <TableCell>
+                          {new Date(artigo.dataPublicacao).toLocaleDateString('pt-BR')}
                         </TableCell>
                         <TableCell>
                           <div className="flex space-x-2">
@@ -204,6 +209,11 @@ const AdminPanel = () => {
                 </Table>
               </CardContent>
             </Card>
+          </TabsContent>
+
+          {/* Gestão de Índices Econômicos */}
+          <TabsContent value="indices">
+            <IndicesEconomicosManager />
           </TabsContent>
 
           {/* Outras abas com conteúdo placeholder */}
@@ -253,6 +263,14 @@ const AdminPanel = () => {
         </Tabs>
       </div>
     </div>
+  );
+};
+
+const AdminPanel = () => {
+  return (
+    <AdminProvider>
+      <AdminPanelContent />
+    </AdminProvider>
   );
 };
 
