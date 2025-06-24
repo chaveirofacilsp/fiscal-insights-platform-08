@@ -4,26 +4,23 @@ import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
-import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table";
 import { Link } from "react-router-dom";
 import { AdminProvider, useAdmin } from "@/contexts/AdminContext";
 import IndicesEconomicosManager from "./admin/IndicesEconomicosManager";
+import UsuariosManager from "./admin/UsuariosManager";
+import ConteudoManager from "./admin/ConteudoManager";
+import CursosManager from "./admin/CursosManager";
+import VendasManager from "./admin/VendasManager";
+import ConfiguracoesManager from "./admin/ConfiguracoesManager";
 
 const AdminPanelContent = () => {
-  const { artigos, indices, linksExternos } = useAdmin();
+  const { artigos, indices, linksExternos, usuarios, cursos, vendas } = useAdmin();
 
   const stats = [
-    { label: "Usuários Ativos", value: "2,847", change: "+12%", icon: Users, color: "text-blue-600" },
+    { label: "Usuários Ativos", value: usuarios.length.toString(), change: "+12%", icon: Users, color: "text-blue-600" },
     { label: "Artigos Publicados", value: artigos.length.toString(), change: "+8%", icon: FileText, color: "text-emerald-600" },
     { label: "Índices Monitorados", value: indices.length.toString(), change: "+3%", icon: TrendingUp, color: "text-purple-600" },
-    { label: "Links Externos", value: linksExternos.length.toString(), change: "+18%", icon: Book, color: "text-orange-600" }
-  ];
-
-  const recentUsers = [
-    { nome: "João Silva", email: "joao@email.com", plano: "Premium", status: "Ativo" },
-    { nome: "Maria Santos", email: "maria@email.com", plano: "Básico", status: "Ativo" },
-    { nome: "Pedro Costa", email: "pedro@email.com", plano: "Premium", status: "Pendente" },
-    { nome: "Ana Oliveira", email: "ana@email.com", plano: "Corporativo", status: "Ativo" }
+    { label: "Cursos Ativos", value: cursos.filter(c => c.status === 'ativo').length.toString(), change: "+18%", icon: Book, color: "text-orange-600" }
   ];
 
   return (
@@ -108,107 +105,13 @@ const AdminPanelContent = () => {
           </TabsList>
 
           {/* Gestão de Usuários */}
-          <TabsContent value="usuarios" className="space-y-6">
-            <div className="flex items-center justify-between">
-              <h2 className="text-xl font-semibold text-slate-800">Gestão de Usuários</h2>
-              <div className="flex space-x-2">
-                <Button variant="outline">Exportar</Button>
-                <Button>Novo Usuário</Button>
-              </div>
-            </div>
-            
-            <Card>
-              <CardContent>
-                <Table>
-                  <TableHeader>
-                    <TableRow>
-                      <TableHead>Nome</TableHead>
-                      <TableHead>Email</TableHead>
-                      <TableHead>Plano</TableHead>
-                      <TableHead>Status</TableHead>
-                      <TableHead>Ações</TableHead>
-                    </TableRow>
-                  </TableHeader>
-                  <TableBody>
-                    {recentUsers.map((user, index) => (
-                      <TableRow key={index}>
-                        <TableCell className="font-medium">{user.nome}</TableCell>
-                        <TableCell>{user.email}</TableCell>
-                        <TableCell>
-                          <Badge variant={user.plano === "Premium" ? "default" : "secondary"}>
-                            {user.plano}
-                          </Badge>
-                        </TableCell>
-                        <TableCell>
-                          <Badge variant={user.status === "Ativo" ? "default" : "secondary"}>
-                            {user.status}
-                          </Badge>
-                        </TableCell>
-                        <TableCell>
-                          <div className="flex space-x-2">
-                            <Button variant="outline" size="sm">Editar</Button>
-                            <Button variant="outline" size="sm">Bloquear</Button>
-                          </div>
-                        </TableCell>
-                      </TableRow>
-                    ))}
-                  </TableBody>
-                </Table>
-              </CardContent>
-            </Card>
+          <TabsContent value="usuarios">
+            <UsuariosManager />
           </TabsContent>
 
           {/* Gestão de Conteúdo */}
-          <TabsContent value="conteudo" className="space-y-6">
-            <div className="flex items-center justify-between">
-              <h2 className="text-xl font-semibold text-slate-800">Gestão de Conteúdo</h2>
-              <div className="flex space-x-2">
-                <Button variant="outline">Importar</Button>
-                <Button>Novo Artigo</Button>
-              </div>
-            </div>
-            
-            <Card>
-              <CardContent>
-                <Table>
-                  <TableHeader>
-                    <TableRow>
-                      <TableHead>Título</TableHead>
-                      <TableHead>Categoria</TableHead>
-                      <TableHead>Autor</TableHead>
-                      <TableHead>Status</TableHead>
-                      <TableHead>Data</TableHead>
-                      <TableHead>Ações</TableHead>
-                    </TableRow>
-                  </TableHeader>
-                  <TableBody>
-                    {artigos.map((artigo, index) => (
-                      <TableRow key={index}>
-                        <TableCell className="font-medium">{artigo.titulo}</TableCell>
-                        <TableCell>
-                          <Badge variant="outline">{artigo.categoria}</Badge>
-                        </TableCell>
-                        <TableCell>{artigo.autor}</TableCell>
-                        <TableCell>
-                          <Badge variant={artigo.status === "publicado" ? "default" : "secondary"}>
-                            {artigo.status}
-                          </Badge>
-                        </TableCell>
-                        <TableCell>
-                          {new Date(artigo.dataPublicacao).toLocaleDateString('pt-BR')}
-                        </TableCell>
-                        <TableCell>
-                          <div className="flex space-x-2">
-                            <Button variant="outline" size="sm">Editar</Button>
-                            <Button variant="outline" size="sm">Publicar</Button>
-                          </div>
-                        </TableCell>
-                      </TableRow>
-                    ))}
-                  </TableBody>
-                </Table>
-              </CardContent>
-            </Card>
+          <TabsContent value="conteudo">
+            <ConteudoManager />
           </TabsContent>
 
           {/* Gestão de Índices Econômicos */}
@@ -216,49 +119,41 @@ const AdminPanelContent = () => {
             <IndicesEconomicosManager />
           </TabsContent>
 
-          {/* Outras abas com conteúdo placeholder */}
+          {/* Gestão de Cursos */}
           <TabsContent value="cursos">
-            <Card>
-              <CardHeader>
-                <CardTitle>Gestão de Cursos</CardTitle>
-              </CardHeader>
-              <CardContent>
-                <p>Interface para gerenciar cursos, módulos e matrículas.</p>
-              </CardContent>
-            </Card>
+            <CursosManager />
           </TabsContent>
 
+          {/* Relatórios de Vendas */}
           <TabsContent value="vendas">
-            <Card>
-              <CardHeader>
-                <CardTitle>Relatórios de Vendas</CardTitle>
-              </CardHeader>
-              <CardContent>
-                <p>Dashboard de vendas e análise de receita.</p>
-              </CardContent>
-            </Card>
+            <VendasManager />
           </TabsContent>
 
+          {/* Analytics - Mantendo placeholder por enquanto */}
           <TabsContent value="analytics">
             <Card>
               <CardHeader>
                 <CardTitle>Analytics Avançado</CardTitle>
               </CardHeader>
               <CardContent>
-                <p>Métricas detalhadas de acesso e engajamento.</p>
+                <p>Dashboard de métricas e análises em desenvolvimento...</p>
+                <div className="grid grid-cols-2 gap-4 mt-4">
+                  <div className="p-4 border border-slate-200 rounded-lg">
+                    <h4 className="font-medium mb-2">Pageviews</h4>
+                    <p className="text-2xl font-bold text-blue-600">45,231</p>
+                  </div>
+                  <div className="p-4 border border-slate-200 rounded-lg">
+                    <h4 className="font-medium mb-2">Sessões</h4>
+                    <p className="text-2xl font-bold text-green-600">12,847</p>
+                  </div>
+                </div>
               </CardContent>
             </Card>
           </TabsContent>
 
+          {/* Configurações do Sistema */}
           <TabsContent value="configuracoes">
-            <Card>
-              <CardHeader>
-                <CardTitle>Configurações do Sistema</CardTitle>
-              </CardHeader>
-              <CardContent>
-                <p>Configurações gerais da plataforma e integrações.</p>
-              </CardContent>
-            </Card>
+            <ConfiguracoesManager />
           </TabsContent>
         </Tabs>
       </div>
