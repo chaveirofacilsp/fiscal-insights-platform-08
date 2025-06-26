@@ -111,7 +111,7 @@ const Presencial = () => {
               <Users className="w-8 h-8 text-purple-600" />
             </div>
             <h3 className="font-semibold text-slate-800 mb-2">Networking</h3>
-            <p class="text-slate-600 text-sm">Conecte-se com outros profissionais</p>
+            <p className="text-slate-600 text-sm">Conecte-se com outros profissionais</p>
           </div>
           <div className="text-center">
             <div className="w-16 h-16 bg-orange-100 rounded-full flex items-center justify-center mx-auto mb-4">

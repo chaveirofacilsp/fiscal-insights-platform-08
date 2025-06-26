@@ -1,4 +1,3 @@
-
 import Header from "@/components/Header";
 import SubHeader from "@/components/SubHeader";
 import Hero from "@/components/Hero";
@@ -6,14 +5,11 @@ import SearchSection from "@/components/SearchSection";
 import ContentFeeds from "@/components/ContentFeeds";
 import LeftSidebar from "@/components/LeftSidebar";
 import RightSidebar from "@/components/RightSidebar";
-import { useState } from "react";
 
 const Index = () => {
-  const [isLoggedIn, setIsLoggedIn] = useState(false);
-
   return (
     <div className="min-h-screen bg-gradient-to-br from-slate-50 via-blue-50 to-emerald-50">
-      <Header isLoggedIn={isLoggedIn} setIsLoggedIn={setIsLoggedIn} />
+      <Header />
       <SubHeader />
       
       <main className="container mx-auto px-4 py-6">

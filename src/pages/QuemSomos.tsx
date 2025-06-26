@@ -1,4 +1,3 @@
-
 import { Users, Target, Award, Heart } from "lucide-react";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import Header from "@/components/Header";

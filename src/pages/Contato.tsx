@@ -1,4 +1,3 @@
-
 import { Phone, Mail, MapPin, Clock } from "lucide-react";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
@@ -11,7 +10,6 @@ import { useState } from "react";
 import { useToast } from "@/hooks/use-toast";
 
 const Contato = () => {
-  const [isLoggedIn, setIsLoggedIn] = useState(false);
   const { toast } = useToast();
   const [formData, setFormData] = useState({
     nome: '',
@@ -36,7 +34,7 @@ const Contato = () => {
 
   return (
     <div className="min-h-screen bg-gradient-to-br from-slate-50 to-blue-50">
-      <Header isLoggedIn={isLoggedIn} setIsLoggedIn={setIsLoggedIn} />
+      <Header />
       
       <div className="container mx-auto px-4 py-8">
         <div className="max-w-6xl mx-auto">

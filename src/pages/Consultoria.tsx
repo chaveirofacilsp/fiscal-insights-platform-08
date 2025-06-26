@@ -1,13 +1,9 @@
-
 import { Users, CheckCircle, Clock, Award } from "lucide-react";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import Header from "@/components/Header";
-import { useState } from "react";
 
 const Consultoria = () => {
-  const [isLoggedIn, setIsLoggedIn] = useState(false);
-
   const servicos = [
     {
       titulo: "Consultoria Tributária",
@@ -28,7 +24,7 @@ const Consultoria = () => {
 
   return (
     <div className="min-h-screen bg-gradient-to-br from-slate-50 to-blue-50">
-      <Header isLoggedIn={isLoggedIn} setIsLoggedIn={setIsLoggedIn} />
+      <Header />
       
       <div className="container mx-auto px-4 py-8">
         <div className="max-w-6xl mx-auto">

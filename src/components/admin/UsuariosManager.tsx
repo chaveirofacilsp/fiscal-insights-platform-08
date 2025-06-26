@@ -1,3 +1,4 @@
+
 import { useState } from "react";
 import { Users, Plus, Pencil, Trash2, Search, Filter } from "lucide-react";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
@@ -21,8 +22,8 @@ const UsuariosManager = () => {
   const [formData, setFormData] = useState({
     nome: "",
     email: "",
-    plano: "Básico" as "Básico" | "Premium" | "Corporativo",
-    status: "Ativo" as "Ativo" | "Pendente" | "Bloqueado"
+    plano: "gratuito" as Usuario['plano'],
+    status: "Ativo" as Usuario['status']
   });
 
   const usuariosFiltrados = usuarios.filter(usuario => {
@@ -49,7 +50,7 @@ const UsuariosManager = () => {
     
     setIsDialogOpen(false);
     setEditingUser(null);
-    setFormData({ nome: "", email: "", plano: "Básico", status: "Ativo" });
+    setFormData({ nome: "", email: "", plano: "gratuito", status: "Ativo" });
   };
 
   const handleEdit = (usuario: Usuario) => {
@@ -72,7 +73,7 @@ const UsuariosManager = () => {
 
   const resetForm = () => {
     setEditingUser(null);
-    setFormData({ nome: "", email: "", plano: "Básico", status: "Ativo" });
+    setFormData({ nome: "", email: "", plano: "gratuito", status: "Ativo" });
   };
 
   return (
@@ -120,13 +121,14 @@ const UsuariosManager = () => {
                 <Label htmlFor="plano">Plano</Label>
                 <Select
                   value={formData.plano}
-                  onValueChange={(value: "Básico" | "Premium" | "Corporativo") => 
+                  onValueChange={(value: Usuario['plano']) => 
                     setFormData({...formData, plano: value})}
                 >
                   <SelectTrigger>
                     <SelectValue />
                   </SelectTrigger>
                   <SelectContent>
+                    <SelectItem value="gratuito">Gratuito</SelectItem>
                     <SelectItem value="Básico">Básico</SelectItem>
                     <SelectItem value="Premium">Premium</SelectItem>
                     <SelectItem value="Corporativo">Corporativo</SelectItem>
@@ -137,7 +139,7 @@ const UsuariosManager = () => {
                 <Label htmlFor="status">Status</Label>
                 <Select
                   value={formData.status}
-                  onValueChange={(value: "Ativo" | "Pendente" | "Bloqueado") => 
+                  onValueChange={(value: Usuario['status']) => 
                     setFormData({...formData, status: value})}
                 >
                   <SelectTrigger>
@@ -185,6 +187,7 @@ const UsuariosManager = () => {
           </SelectTrigger>
           <SelectContent>
             <SelectItem value="todos">Todos os Planos</SelectItem>
+            <SelectItem value="gratuito">Gratuito</SelectItem>
             <SelectItem value="Básico">Básico</SelectItem>
             <SelectItem value="Premium">Premium</SelectItem>
             <SelectItem value="Corporativo">Corporativo</SelectItem>
