@@ -1,4 +1,3 @@
-
 export interface Usuario {
   id: string;
   nome: string;
@@ -7,6 +6,9 @@ export interface Usuario {
   status: 'ativo' | 'pendente' | 'bloqueado' | 'rejeitado';
   dataRegistro: string;
   ultimoAcesso: string;
+  documento?: string;
+  empresa?: string;
+  telefone?: string;
 }
 
 export interface Artigo {

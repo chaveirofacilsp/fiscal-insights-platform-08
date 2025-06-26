@@ -1,4 +1,3 @@
-
 import React, { createContext, useContext, useState, ReactNode, useEffect } from 'react';
 import { Usuario } from '@/types/admin';
 import { supabase } from '@/integrations/supabase/client';
@@ -45,7 +44,10 @@ export const UsuariosProvider = ({ children }: { children: ReactNode }) => {
         plano: (profile.plano || 'gratuito') as Usuario['plano'],
         status: (profile.status || 'ativo') as Usuario['status'],
         dataRegistro: profile.created_at || new Date().toISOString(),
-        ultimoAcesso: profile.updated_at || new Date().toISOString()
+        ultimoAcesso: profile.updated_at || new Date().toISOString(),
+        documento: profile.documento || undefined,
+        empresa: profile.empresa || undefined,
+        telefone: profile.telefone || undefined
       }));
       
       setUsuarios(usuariosFormatados);
@@ -67,7 +69,8 @@ export const UsuariosProvider = ({ children }: { children: ReactNode }) => {
               email: dadosUsuario.email,
               plano: dadosUsuario.plano,
               documento: dadosUsuario.documento || 'Não informado',
-              empresa: dadosUsuario.empresa || 'Não informado'
+              empresa: dadosUsuario.empresa || 'Não informado',
+              telefone: dadosUsuario.telefone || 'Não informado'
             }
           }
         });
