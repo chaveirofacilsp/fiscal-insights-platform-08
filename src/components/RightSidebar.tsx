@@ -143,7 +143,7 @@ const RightSidebar = () => {
             ))}
             <div className="pt-2 border-t border-slate-200">
               <span className="text-xs text-slate-600">
-                Atualizado em: {indices.length > 0 ? new Date(indices[0].ultimaAtualizacao).toLocaleDateString('pt-BR') : 'N/A'}
+                Atualizado em: {indices.length > 0 ? new Date(indices[0].dataAtualizacao).toLocaleDateString('pt-BR') : 'N/A'}
               </span>
             </div>
           </CardContent>

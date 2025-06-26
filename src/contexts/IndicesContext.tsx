@@ -25,11 +25,61 @@ export const useIndices = () => {
 
 export const IndicesProvider = ({ children }: { children: ReactNode }) => {
   const [indices, setIndices] = useState<IndiceEconomico[]>([
-    { id: '1', nome: 'SELIC', valor: '10.75%', variacao: '+0.25', tipo: 'alta', ultimaAtualizacao: new Date().toISOString(), fonte: 'Banco Central' },
-    { id: '2', nome: 'IPCA', valor: '4.62%', variacao: '-0.15', tipo: 'baixa', ultimaAtualizacao: new Date().toISOString(), fonte: 'IBGE' },
-    { id: '3', nome: 'IGP-M', valor: '3.18%', variacao: '+0.08', tipo: 'alta', ultimaAtualizacao: new Date().toISOString(), fonte: 'FGV' },
-    { id: '4', nome: 'INPC', valor: '4.77%', variacao: '+0.12', tipo: 'alta', ultimaAtualizacao: new Date().toISOString(), fonte: 'IBGE' },
-    { id: '5', nome: 'CDI', valor: '10.65%', variacao: '0.00', tipo: 'neutro', ultimaAtualizacao: new Date().toISOString(), fonte: 'CETIP' }
+    { 
+      id: '1', 
+      nome: 'SELIC', 
+      valor: '10.75%', 
+      variacao: '+0.25', 
+      tipo: 'alta', 
+      dataAtualizacao: new Date().toISOString(), 
+      fonte: 'Banco Central',
+      categoria: 'Taxa de Juros',
+      unidade: '%'
+    },
+    { 
+      id: '2', 
+      nome: 'IPCA', 
+      valor: '4.62%', 
+      variacao: '-0.15', 
+      tipo: 'baixa', 
+      dataAtualizacao: new Date().toISOString(), 
+      fonte: 'IBGE',
+      categoria: 'Inflação',
+      unidade: '%'
+    },
+    { 
+      id: '3', 
+      nome: 'IGP-M', 
+      valor: '3.18%', 
+      variacao: '+0.08', 
+      tipo: 'alta', 
+      dataAtualizacao: new Date().toISOString(), 
+      fonte: 'FGV',
+      categoria: 'Inflação',
+      unidade: '%'
+    },
+    { 
+      id: '4', 
+      nome: 'INPC', 
+      valor: '4.77%', 
+      variacao: '+0.12', 
+      tipo: 'alta', 
+      dataAtualizacao: new Date().toISOString(), 
+      fonte: 'IBGE',
+      categoria: 'Inflação',
+      unidade: '%'
+    },
+    { 
+      id: '5', 
+      nome: 'CDI', 
+      valor: '10.65%', 
+      variacao: '0.00', 
+      tipo: 'neutro', 
+      dataAtualizacao: new Date().toISOString(), 
+      fonte: 'CETIP',
+      categoria: 'Taxa de Juros',
+      unidade: '%'
+    }
   ]);
 
   const [configuracoes, setConfiguracoes] = useState({
@@ -41,7 +91,7 @@ export const IndicesProvider = ({ children }: { children: ReactNode }) => {
   const atualizarIndice = (id: string, dados: Partial<IndiceEconomico>) => {
     setIndices(prev => prev.map(indice => 
       indice.id === id 
-        ? { ...indice, ...dados, ultimaAtualizacao: new Date().toISOString() }
+        ? { ...indice, ...dados, dataAtualizacao: new Date().toISOString() }
         : indice
     ));
   };
@@ -50,7 +100,7 @@ export const IndicesProvider = ({ children }: { children: ReactNode }) => {
     const novoIndice: IndiceEconomico = {
       ...indice,
       id: Date.now().toString(),
-      ultimaAtualizacao: new Date().toISOString()
+      dataAtualizacao: new Date().toISOString()
     };
     setIndices(prev => [...prev, novoIndice]);
   };
@@ -63,8 +113,9 @@ export const IndicesProvider = ({ children }: { children: ReactNode }) => {
     console.log('Atualizando todos os índices...');
     setIndices(prev => prev.map(indice => ({
       ...indice,
-      ultimaAtualizacao: new Date().toISOString(),
-      variacao: (Math.random() > 0.5 ? '+' : '-') + (Math.random() * 0.5).toFixed(2)
+      dataAtualizacao: new Date().toISOString(),
+      variacao: (Math.random() > 0.5 ? '+' : '-') + (Math.random() * 0.5).toFixed(2),
+      tipo: Math.random() > 0.6 ? 'alta' : Math.random() > 0.3 ? 'baixa' : 'neutro' as 'alta' | 'baixa' | 'neutro'
     })));
     
     setConfiguracoes(prev => ({

@@ -12,12 +12,15 @@ export interface Usuario {
 export interface Artigo {
   id: string;
   titulo: string;
+  resumo: string;
   conteudo: string;
   categoria: string;
   autor: string;
   dataPublicacao: string;
   status: 'rascunho' | 'publicado' | 'arquivado';
   visualizacoes: number;
+  tags: string[];
+  secaoTematica: string;
 }
 
 export interface LinkExterno {
@@ -27,17 +30,19 @@ export interface LinkExterno {
   categoria: string;
   descricao: string;
   dataAdicao: string;
+  ativo: boolean;
 }
 
 export interface IndiceEconomico {
   id: string;
   nome: string;
-  valor: number;
+  valor: string;
   dataAtualizacao: string;
   fonte: string;
   categoria: string;
   unidade: string;
-  variacao?: number;
+  variacao: string;
+  tipo: 'alta' | 'baixa' | 'neutro';
 }
 
 export interface Curso {
@@ -69,4 +74,30 @@ export interface Configuracao {
   valor: string;
   descricao: string;
   categoria: string;
+}
+
+export interface MenuItem {
+  id: string;
+  titulo: string;
+  items: string[];
+  ordem: number;
+  ativo: boolean;
+}
+
+export interface ConfiguracaoSistema {
+  id: string;
+  chave: string;
+  valor: string;
+  tipo: 'texto' | 'numero' | 'email' | 'url' | 'boolean';
+  categoria: string;
+  descricao: string;
+}
+
+export interface SecaoTematica {
+  id: string;
+  nome: string;
+  titulo: string;
+  descricao: string;
+  conteudos: string[];
+  ativa: boolean;
 }

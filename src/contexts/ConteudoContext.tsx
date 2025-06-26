@@ -44,18 +44,49 @@ export const ConteudoProvider = ({ children }: { children: ReactNode }) => {
       status: 'publicado',
       dataPublicacao: new Date().toISOString(),
       tags: ['receita-federal', 'instrucao-normativa'],
-      secaoTematica: 'IR'
+      secaoTematica: 'IR',
+      visualizacoes: 0
     }
   ]);
 
   const [linksExternos, setLinksExternos] = useState<LinkExterno[]>([
-    { id: '1', titulo: 'Receita Federal', url: 'https://www.gov.br/receitafederal', categoria: 'Órgãos Fiscais', ativo: true },
-    { id: '2', titulo: 'Banco Central', url: 'https://www.bcb.gov.br', categoria: 'Órgãos Fiscais', ativo: true }
+    { 
+      id: '1', 
+      titulo: 'Receita Federal', 
+      url: 'https://www.gov.br/receitafederal', 
+      categoria: 'Órgãos Fiscais', 
+      ativo: true,
+      descricao: 'Site oficial da Receita Federal',
+      dataAdicao: new Date().toISOString()
+    },
+    { 
+      id: '2', 
+      titulo: 'Banco Central', 
+      url: 'https://www.bcb.gov.br', 
+      categoria: 'Órgãos Fiscais', 
+      ativo: true,
+      descricao: 'Site oficial do Banco Central',
+      dataAdicao: new Date().toISOString()
+    }
   ]);
 
   const [secoesTematicas, setSecoesTematicas] = useState<SecaoTematica[]>([
-    { id: '1', nome: 'SIMPLES', titulo: 'Simples Nacional', descricao: 'Conteúdos sobre o regime tributário Simples Nacional', conteudos: [], ativa: true },
-    { id: '2', nome: 'IR', titulo: 'Imposto de Renda', descricao: 'Conteúdos sobre Imposto de Renda PF e PJ', conteudos: [], ativa: true }
+    { 
+      id: '1', 
+      nome: 'SIMPLES', 
+      titulo: 'Simples Nacional', 
+      descricao: 'Conteúdos sobre o regime tributário Simples Nacional', 
+      conteudos: [], 
+      ativa: true 
+    },
+    { 
+      id: '2', 
+      nome: 'IR', 
+      titulo: 'Imposto de Renda', 
+      descricao: 'Conteúdos sobre Imposto de Renda PF e PJ', 
+      conteudos: [], 
+      ativa: true 
+    }
   ]);
 
   const adicionarArtigo = (artigo: Omit<Artigo, 'id'>) => {
