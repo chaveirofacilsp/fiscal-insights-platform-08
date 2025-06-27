@@ -1,5 +1,5 @@
 
-import { Users, FileText, Settings, BarChart3, Calendar, Book, ShoppingCart, MessageSquare, ArrowLeft, TrendingUp } from "lucide-react";
+import { Users, FileText, Settings, BarChart3, Calendar, Book, ShoppingCart, MessageSquare, ArrowLeft, TrendingUp, ClipboardList, Monitor } from "lucide-react";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
@@ -13,6 +13,8 @@ import ConteudoManager from "./admin/ConteudoManager";
 import CursosManager from "./admin/CursosManager";
 import VendasManager from "./admin/VendasManager";
 import ConfiguracoesManager from "./admin/ConfiguracoesManager";
+import SolicitacoesManager from "./admin/SolicitacoesManager";
+import ContratacoesSoftwareManager from "./admin/ContratacoesSoftwareManager";
 import NotificationBadge from "./admin/NotificationBadge";
 
 const AdminPanelContent = () => {
@@ -76,7 +78,7 @@ const AdminPanelContent = () => {
 
         {/* Main Content */}
         <Tabs defaultValue="usuarios" className="w-full">
-          <TabsList className="grid w-full grid-cols-7 mb-6">
+          <TabsList className="grid w-full grid-cols-9 mb-6">
             <TabsTrigger value="usuarios" className="flex items-center space-x-2">
               <Users className="w-4 h-4" />
               <span>Usuários</span>
@@ -96,6 +98,14 @@ const AdminPanelContent = () => {
             <TabsTrigger value="vendas" className="flex items-center space-x-2">
               <ShoppingCart className="w-4 h-4" />
               <span>Vendas</span>
+            </TabsTrigger>
+            <TabsTrigger value="solicitacoes" className="flex items-center space-x-2">
+              <ClipboardList className="w-4 h-4" />
+              <span>Orçamentos</span>
+            </TabsTrigger>
+            <TabsTrigger value="software" className="flex items-center space-x-2">
+              <Monitor className="w-4 h-4" />
+              <span>Software</span>
             </TabsTrigger>
             <TabsTrigger value="analytics" className="flex items-center space-x-2">
               <BarChart3 className="w-4 h-4" />
@@ -130,6 +140,16 @@ const AdminPanelContent = () => {
           {/* Relatórios de Vendas */}
           <TabsContent value="vendas">
             <VendasManager />
+          </TabsContent>
+
+          {/* Solicitações de Orçamento */}
+          <TabsContent value="solicitacoes">
+            <SolicitacoesManager />
+          </TabsContent>
+
+          {/* Contratações de Software */}
+          <TabsContent value="software">
+            <ContratacoesSoftwareManager />
           </TabsContent>
 
           {/* Analytics - Mantendo placeholder por enquanto */}
