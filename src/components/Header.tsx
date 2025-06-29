@@ -1,9 +1,9 @@
 import { Link } from "react-router-dom";
 import { Button } from "./ui/button";
-import { Phone, Mail, User, Menu } from "lucide-react";
+import { Phone, Mail, User, Menu, ChevronDown } from "lucide-react";
 import { useState } from "react";
 import UserMenu from "./UserMenu";
-import { DropdownMenu, DropdownMenuTrigger, DropdownMenuContent, DropdownMenuItem, ChevronDown } from "@radix-ui/react-dropdown-menu";
+import { DropdownMenu, DropdownMenuTrigger, DropdownMenuContent, DropdownMenuItem } from "@/components/ui/dropdown-menu";
 
 const Header = () => {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
