@@ -1,3 +1,4 @@
+
 import { Toaster } from "@/components/ui/toaster";
 import { Toaster as Sonner } from "@/components/ui/sonner";
 import { TooltipProvider } from "@/components/ui/tooltip";
@@ -34,6 +35,8 @@ import TrabalhoPrevidencia from "./pages/TrabalhoPrevidencia";
 import Comercial from "./pages/Comercial";
 import Sped from "./pages/Sped";
 import Declaracoes from "./pages/Declaracoes";
+import Contabilidade from "./pages/Contabilidade";
+import ReformaPrevidencia from "./pages/ReformaPrevidencia";
 // Subcategory imports
 import PessoaFisica from "./pages/ir/PessoaFisica";
 import PessoaJuridica from "./pages/ir/PessoaJuridica";
@@ -93,6 +96,8 @@ const App = () => (
                 <Route path="/comercial" element={<Comercial />} />
                 <Route path="/sped" element={<Sped />} />
                 <Route path="/declaracoes" element={<Declaracoes />} />
+                <Route path="/contabilidade" element={<Contabilidade />} />
+                <Route path="/reforma-previdencia" element={<ReformaPrevidencia />} />
                 
                 {/* IR Subcategory Routes */}
                 <Route path="/ir/pessoa-fisica" element={<PessoaFisica />} />

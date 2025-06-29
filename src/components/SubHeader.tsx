@@ -122,6 +122,7 @@ const SubHeader = () => {
     },
     {
       title: "Contabilidade",
+      path: "/contabilidade",
       items: [
         { name: "Balanço", path: "/contabilidade/balanco" },
         { name: "DRE", path: "/contabilidade/dre" },
@@ -132,6 +133,7 @@ const SubHeader = () => {
     },
     {
       title: "Reforma da Previdência",
+      path: "/reforma-previdencia",
       items: [
         { name: "Novas Regras", path: "/reforma-previdencia/novas-regras" },
         { name: "Transição", path: "/reforma-previdencia/transicao" },
