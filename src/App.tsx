@@ -1,4 +1,3 @@
-
 import { Toaster } from "@/components/ui/toaster";
 import { Toaster as Sonner } from "@/components/ui/sonner";
 import { TooltipProvider } from "@/components/ui/tooltip";
@@ -37,15 +36,22 @@ import Sped from "./pages/Sped";
 import Declaracoes from "./pages/Declaracoes";
 import Contabilidade from "./pages/Contabilidade";
 import ReformaPrevidencia from "./pages/ReformaPrevidencia";
-// Subcategory imports
+import BuscaAvancada from "./pages/BuscaAvancada";
+import FerramentasUteis from "./pages/FerramentasUteis";
+import Publicacoes from "./pages/Publicacoes";
+import Planos from "./pages/Planos";
+import Comunidade from "./pages/Comunidade";
+import CalendarioFiscal from "./pages/CalendarioFiscal";
+// Legislação
+import Trabalhista from "./pages/legislacao/Trabalhista";
+import Previdenciaria from "./pages/legislacao/Previdenciaria";
+import Contabil from "./pages/legislacao/Contabil";
+import Fiscal from "./pages/legislacao/Fiscal";
+// Subcategories
 import PessoaFisica from "./pages/ir/PessoaFisica";
 import PessoaJuridica from "./pages/ir/PessoaJuridica";
 import Cumulativo from "./pages/pis-cofins/Cumulativo";
 import ESocial from "./pages/trabalho-previdencia/ESocial";
-import BuscaAvancada from "./pages/BuscaAvancada";
-import FerramentasUteis from "./pages/FerramentasUteis";
-import Publicacoes from "./pages/Publicacoes";
-// New subcategory imports
 import IcmsEstadual from "./pages/icms-iss-ipi/IcmsEstadual";
 import IssMunicipal from "./pages/icms-iss-ipi/IssMunicipal";
 import IpiFederal from "./pages/icms-iss-ipi/IpiFederal";
@@ -81,13 +87,23 @@ const App = () => (
                   </ProtectedRoute>
                 } />
                 
+                {/* Legislação */}
+                <Route path="/legislacao/trabalhista" element={<Trabalhista />} />
+                <Route path="/legislacao/previdenciaria" element={<Previdenciaria />} />
+                <Route path="/legislacao/contabil" element={<Contabil />} />
+                <Route path="/legislacao/fiscal" element={<Fiscal />} />
+                
+                {/* Principais */}
+                <Route path="/calendario-fiscal" element={<CalendarioFiscal />} />
+                <Route path="/planos" element={<Planos />} />
+                <Route path="/comunidade" element={<Comunidade />} />
                 <Route path="/quem-somos" element={<QuemSomos />} />
                 <Route path="/softwares" element={<Softwares />} />
                 <Route path="/consultoria" element={<Consultoria />} />
                 <Route path="/ferramentas" element={<Ferramentas />} />
                 <Route path="/ferramentas-uteis" element={<FerramentasUteis />} />
                 <Route path="/busca-avancada" element={<BuscaAvancada />} />
-            <Route path="/publicacoes" element={<Publicacoes />} />
+                <Route path="/publicacoes" element={<Publicacoes />} />
                 <Route path="/cursos" element={<Cursos />} />
                 <Route path="/cursos/ead" element={<EAD />} />
                 <Route path="/cursos/presencial" element={<Presencial />} />
@@ -96,14 +112,14 @@ const App = () => (
                 <Route path="/newsletter" element={<Newsletter />} />
                 <Route path="/suporte" element={<Suporte />} />
                 
-                {/* Simples Nacional Routes */}
+                {/* Simples Nacional */}
                 <Route path="/desenquadramento" element={<Desenquadramento />} />
                 <Route path="/optantes" element={<Optantes />} />
                 <Route path="/sublimites" element={<Sublimites />} />
                 <Route path="/anexos" element={<Anexos />} />
                 <Route path="/calculo" element={<Calculo />} />
                 
-                {/* Main Category Routes */}
+                {/* Categorias */}
                 <Route path="/ir" element={<IR />} />
                 <Route path="/pis-cofins" element={<PisCofins />} />
                 <Route path="/icms-iss-ipi" element={<IcmsIssIpi />} />
@@ -114,34 +130,24 @@ const App = () => (
                 <Route path="/contabilidade" element={<Contabilidade />} />
                 <Route path="/reforma-previdencia" element={<ReformaPrevidencia />} />
                 
-                {/* IR Subcategory Routes */}
+                {/* Subcategorias */}
                 <Route path="/ir/pessoa-fisica" element={<PessoaFisica />} />
                 <Route path="/ir/pessoa-juridica" element={<PessoaJuridica />} />
-                
-                {/* PIS/COFINS Subcategory Routes */}
                 <Route path="/pis-cofins/cumulativo" element={<Cumulativo />} />
-                
-                {/* ICMS/ISS/IPI Subcategory Routes */}
                 <Route path="/icms-iss-ipi/icms-estadual" element={<IcmsEstadual />} />
                 <Route path="/icms-iss-ipi/iss-municipal" element={<IssMunicipal />} />
                 <Route path="/icms-iss-ipi/ipi-federal" element={<IpiFederal />} />
                 <Route path="/icms-iss-ipi/substituicao-tributaria" element={<SubstituicaoTributaria />} />
                 <Route path="/icms-iss-ipi/beneficios" element={<BeneficiosICMS />} />
-                
-                {/* Trabalho e Previdência Subcategory Routes */}
                 <Route path="/trabalho-previdencia/esocial" element={<ESocial />} />
                 <Route path="/trabalho-previdencia/fgts" element={<Fgts />} />
                 <Route path="/trabalho-previdencia/contribuicoes" element={<Contribuicoes />} />
                 <Route path="/trabalho-previdencia/folha-pagamento" element={<FolhaPagamento />} />
                 <Route path="/trabalho-previdencia/beneficios" element={<BeneficiosTP />} />
-                
-                {/* Comercial Subcategory Routes */}
                 <Route path="/comercial/notas-fiscais" element={<NotasFiscais />} />
                 <Route path="/comercial/contratos" element={<Contratos />} />
                 <Route path="/comercial/documentos" element={<Documentos />} />
                 <Route path="/comercial/importacao-exportacao" element={<ImportacaoExportacao />} />
-                
-                {/* SPED Subcategory Routes */}
                 <Route path="/sped/ecd" element={<Ecd />} />
                 
                 <Route path="*" element={<NotFound />} />
