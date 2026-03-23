@@ -99,7 +99,7 @@ const Index = () => {
                     <Badge variant="outline">{item.tipo === "legislacao" ? "Legislação" : "Artigo"}</Badge>
                     {item.nivel_acesso !== "gratuito" && (
                       <Badge className="bg-amber-100 text-amber-700 border-amber-300">
-                        <Lock className="h-3 w-3 mr-1" /> Premium
+                        <LockKeyhole className="h-3 w-3 mr-1" /> Premium
                       </Badge>
                     )}
                   </div>
