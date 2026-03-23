@@ -1,7 +1,6 @@
-
 import { Link } from "react-router-dom";
 import { Button } from "./ui/button";
-import { Phone, Mail, User, Menu, ChevronDown } from "lucide-react";
+import { Mail, Menu, ChevronDown, Briefcase, Shield, BookOpen, Receipt, Calculator, Calendar, Users, Crown } from "lucide-react";
 import { useState } from "react";
 import UserMenu from "./UserMenu";
 import { DropdownMenu, DropdownMenuTrigger, DropdownMenuContent, DropdownMenuItem } from "@/components/ui/dropdown-menu";
@@ -9,176 +8,130 @@ import { DropdownMenu, DropdownMenuTrigger, DropdownMenuContent, DropdownMenuIte
 const Header = () => {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
 
-  const toggleMenu = () => {
-    setIsMenuOpen(!isMenuOpen);
-  };
-
   return (
-    <header className="bg-white shadow-md sticky top-0 z-50">
+    <header className="bg-background shadow-md sticky top-0 z-50">
       {/* Top Bar */}
       <div className="bg-slate-700 text-white py-2">
         <div className="container mx-auto px-4 flex justify-between items-center text-sm">
-          <div className="flex items-center space-x-4">
-            <div className="flex items-center space-x-1">
-              <Mail className="w-3 h-3" />
-              <span>contato@conectafisco.com</span>
-            </div>
+          <div className="flex items-center space-x-1">
+            <Mail className="w-3 h-3" />
+            <span>contato@conectafisco.com</span>
           </div>
-          <div className="flex items-center space-x-4">
-            <UserMenu />
-          </div>
+          <UserMenu />
         </div>
       </div>
 
       {/* Main Header */}
-      <div className="container mx-auto px-4 py-4">
+      <div className="container mx-auto px-4 py-3">
         <div className="flex items-center justify-between">
-          {/* Logo */}
           <Link to="/" className="flex items-center space-x-3">
             <div className="w-10 h-10 bg-gradient-to-br from-blue-600 to-emerald-600 rounded-lg flex items-center justify-center">
               <span className="text-white font-bold text-lg">CF</span>
             </div>
             <div>
-              <h1 className="text-2xl font-bold text-slate-800">Conecta Fisco</h1>
-              <p className="text-sm text-slate-600">Soluções Fiscais Completas</p>
+              <h1 className="text-2xl font-bold text-foreground">Conecta Fisco</h1>
+              <p className="text-xs text-muted-foreground">Legislação Interpretada e Aplicável</p>
             </div>
           </Link>
 
           {/* Desktop Navigation */}
-          <nav className="hidden md:flex items-center space-x-8">
-            <Link to="/quem-somos" className="text-slate-700 hover:text-blue-600 transition-colors font-medium">
-              Quem Somos
+          <nav className="hidden lg:flex items-center space-x-1">
+            <Link to="/">
+              <Button variant="ghost" size="sm">Início</Button>
             </Link>
-            
+
             <DropdownMenu>
               <DropdownMenuTrigger asChild>
-                <Button variant="ghost" className="text-slate-700 hover:text-blue-600 flex items-center space-x-1">
-                  <span>Produtos</span>
-                  <ChevronDown className="w-4 h-4" />
+                <Button variant="ghost" size="sm" className="flex items-center gap-1">
+                  Legislação <ChevronDown className="w-3 h-3" />
                 </Button>
               </DropdownMenuTrigger>
-              <DropdownMenuContent className="w-48 bg-white shadow-lg border border-slate-200">
+              <DropdownMenuContent className="w-52 bg-background shadow-lg border">
                 <DropdownMenuItem asChild>
-                  <Link to="/softwares" className="w-full">Softwares</Link>
+                  <Link to="/legislacao/trabalhista" className="w-full flex items-center gap-2">
+                    <Briefcase className="h-4 w-4" /> Trabalhista
+                  </Link>
                 </DropdownMenuItem>
                 <DropdownMenuItem asChild>
-                  <Link to="/consultoria" className="w-full">Consultoria</Link>
+                  <Link to="/legislacao/previdenciaria" className="w-full flex items-center gap-2">
+                    <Shield className="h-4 w-4" /> Previdenciária
+                  </Link>
                 </DropdownMenuItem>
                 <DropdownMenuItem asChild>
-                  <Link to="/ferramentas" className="w-full">Ferramentas</Link>
+                  <Link to="/legislacao/contabil" className="w-full flex items-center gap-2">
+                    <BookOpen className="h-4 w-4" /> Contábil
+                  </Link>
                 </DropdownMenuItem>
                 <DropdownMenuItem asChild>
-                  <Link to="/ferramentas-uteis" className="w-full">Ferramentas Úteis</Link>
-                </DropdownMenuItem>
-                <DropdownMenuItem asChild>
-                  <Link to="/busca-avancada" className="w-full">Busca Avançada</Link>
+                  <Link to="/legislacao/fiscal" className="w-full flex items-center gap-2">
+                    <Receipt className="h-4 w-4" /> Fiscal
+                  </Link>
                 </DropdownMenuItem>
               </DropdownMenuContent>
             </DropdownMenu>
 
-            <Link to="/cursos" className="text-slate-700 hover:text-blue-600 transition-colors font-medium">
-              Cursos
+            <Link to="/ferramentas-uteis">
+              <Button variant="ghost" size="sm" className="flex items-center gap-1">
+                <Calculator className="h-3 w-3" /> Ferramentas
+              </Button>
             </Link>
-            
-            <Link to="/publicacoes" className="text-slate-700 hover:text-blue-600 transition-colors font-medium">
-              Publicações
+
+            <Link to="/calendario-fiscal">
+              <Button variant="ghost" size="sm" className="flex items-center gap-1">
+                <Calendar className="h-3 w-3" /> Prazos
+              </Button>
             </Link>
-            
-            <Link to="/contato" className="text-slate-700 hover:text-blue-600 transition-colors font-medium">
-              Contato
+
+            <Link to="/comunidade">
+              <Button variant="ghost" size="sm" className="flex items-center gap-1">
+                <Users className="h-3 w-3" /> Comunidade
+              </Button>
             </Link>
-            
-            <Link to="/newsletter" className="text-slate-700 hover:text-blue-600 transition-colors font-medium">
-              Newsletter
+
+            <Link to="/planos">
+              <Button variant="ghost" size="sm" className="flex items-center gap-1 text-amber-600">
+                <Crown className="h-3 w-3" /> Premium
+              </Button>
             </Link>
-            
-            <Link to="/suporte" className="text-slate-700 hover:text-blue-600 transition-colors font-medium">
-              Suporte
+
+            <Link to="/contato">
+              <Button variant="ghost" size="sm">Contato</Button>
             </Link>
           </nav>
 
-          {/* Mobile Menu Button */}
-          <button 
-            className="lg:hidden p-2 hover:bg-slate-100 rounded-lg transition-colors"
-            onClick={toggleMenu}
+          <button
+            className="lg:hidden p-2 hover:bg-secondary rounded-lg transition-colors"
+            onClick={() => setIsMenuOpen(!isMenuOpen)}
           >
-            <Menu className="w-6 h-6 text-slate-700" />
+            <Menu className="w-6 h-6 text-foreground" />
           </button>
         </div>
 
         {/* Mobile Navigation */}
         {isMenuOpen && (
-          <nav className="lg:hidden mt-4 pt-4 border-t border-slate-200 space-y-2">
-            <Link 
-              to="/quem-somos" 
-              className="block py-2 text-slate-700 hover:text-blue-600 transition-colors"
-              onClick={() => setIsMenuOpen(false)}
-            >
-              Quem Somos
-            </Link>
-            <Link 
-              to="/softwares" 
-              className="block py-2 text-slate-700 hover:text-blue-600 transition-colors"
-              onClick={() => setIsMenuOpen(false)}
-            >
-              Softwares
-            </Link>
-            <Link 
-              to="/consultoria" 
-              className="block py-2 text-slate-700 hover:text-blue-600 transition-colors"
-              onClick={() => setIsMenuOpen(false)}
-            >
-              Consultoria
-            </Link>
-            <Link 
-              to="/ferramentas" 
-              className="block py-2 text-slate-700 hover:text-blue-600 transition-colors"
-              onClick={() => setIsMenuOpen(false)}
-            >
-              Ferramentas
-            </Link>
-            <Link 
-              to="/cursos/ead" 
-              className="block py-2 text-slate-700 hover:text-blue-600 transition-colors"
-              onClick={() => setIsMenuOpen(false)}
-            >
-              Cursos EAD
-            </Link>
-            <Link 
-              to="/cursos/presencial" 
-              className="block py-2 text-slate-700 hover:text-blue-600 transition-colors"
-              onClick={() => setIsMenuOpen(false)}
-            >
-              Cursos Presenciais
-            </Link>
-            <Link 
-              to="/cursos/incompany" 
-              className="block py-2 text-slate-700 hover:text-blue-600 transition-colors"
-              onClick={() => setIsMenuOpen(false)}
-            >
-              In Company
-            </Link>
-            <Link 
-              to="/contato" 
-              className="block py-2 text-slate-700 hover:text-blue-600 transition-colors"
-              onClick={() => setIsMenuOpen(false)}
-            >
-              Contato
-            </Link>
-            <Link 
-              to="/newsletter" 
-              className="block py-2 text-slate-700 hover:text-blue-600 transition-colors"
-              onClick={() => setIsMenuOpen(false)}
-            >
-              Newsletter
-            </Link>
-            <Link 
-              to="/suporte" 
-              className="block py-2 text-slate-700 hover:text-blue-600 transition-colors"
-              onClick={() => setIsMenuOpen(false)}
-            >
-              Suporte
-            </Link>
+          <nav className="lg:hidden mt-4 pt-4 border-t space-y-1">
+            {[
+              { to: "/", label: "Início" },
+              { to: "/legislacao/trabalhista", label: "Legislação Trabalhista" },
+              { to: "/legislacao/previdenciaria", label: "Legislação Previdenciária" },
+              { to: "/legislacao/contabil", label: "Legislação Contábil" },
+              { to: "/legislacao/fiscal", label: "Legislação Fiscal" },
+              { to: "/ferramentas-uteis", label: "Ferramentas e Simuladores" },
+              { to: "/calendario-fiscal", label: "Calendário Fiscal" },
+              { to: "/comunidade", label: "Comunidade" },
+              { to: "/planos", label: "Premium" },
+              { to: "/contato", label: "Contato" },
+              { to: "/suporte", label: "Suporte" },
+            ].map((item) => (
+              <Link
+                key={item.to}
+                to={item.to}
+                className="block py-2 px-3 text-foreground hover:bg-secondary rounded-md transition-colors"
+                onClick={() => setIsMenuOpen(false)}
+              >
+                {item.label}
+              </Link>
+            ))}
           </nav>
         )}
       </div>
