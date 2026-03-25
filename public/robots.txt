@@ -1,14 +1,20 @@
+User-agent: *
+Allow: /
+Disallow: /admin
+Disallow: /auth
+
+Sitemap: https://conectafisco.com.br/sitemap.xml
+
 User-agent: Googlebot
 Allow: /
+Crawl-delay: 1
 
 User-agent: Bingbot
 Allow: /
-
-User-agent: Twitterbot
-Allow: /
+Crawl-delay: 2
 
 User-agent: facebookexternalhit
 Allow: /
 
-User-agent: *
+User-agent: Twitterbot
 Allow: /
