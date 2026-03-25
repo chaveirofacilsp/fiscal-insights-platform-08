@@ -1,7 +1,8 @@
+import { supabase } from "@/integrations/supabase/client";
 import { Conteudo, PrazoObrigacao } from "@/types/conteudo";
 
-export const mockConteudos: Conteudo[] = [
-  // Trabalhista
+// Fallback mock data used when database is empty
+const mockConteudos: Conteudo[] = [
   {
     id: "1",
     titulo: "Nova Portaria MTE nº 3.665/2024 - Atualização do eSocial",
@@ -10,7 +11,7 @@ export const mockConteudos: Conteudo[] = [
     orgao_emissor: "Ministério do Trabalho",
     numero_norma: "Portaria MTE nº 3.665/2024",
     data_publicacao: "2026-03-20",
-    resumo_executivo: "Alterações nas regras de envio de eventos do eSocial para empresas do Simples Nacional, com novos prazos e obrigatoriedades a partir de julho de 2026.",
+    resumo_executivo: "Alterações nas regras de envio de eventos do eSocial para empresas do Simples Nacional.",
     comentario_tecnico: "A portaria simplifica o envio de eventos periódicos para MEIs e empresas do Simples Nacional.",
     exemplo_pratico: "Empresa optante pelo Simples com 5 funcionários: antes enviava 12 eventos mensais, agora envia 8.",
     tags: ["eSocial", "Simples Nacional", "MEI"],
@@ -40,93 +41,6 @@ export const mockConteudos: Conteudo[] = [
     updated_at: "2026-03-15",
   },
   {
-    id: "3",
-    titulo: "Férias Coletivas: Regras e Procedimentos Atualizados",
-    tipo: "artigo",
-    categoria: "Trabalhista",
-    data_publicacao: "2026-03-10",
-    resumo_executivo: "Guia completo sobre férias coletivas: comunicação ao sindicato, cálculos, abono pecuniário e obrigações acessórias.",
-    tags: ["Férias", "CLT"],
-    nivel_acesso: "premium",
-    destaque: false,
-    visualizacoes: 890,
-    status: "publicado",
-    created_at: "2026-03-10",
-    updated_at: "2026-03-10",
-  },
-  // Previdenciária
-  {
-    id: "4",
-    titulo: "IN RFB nº 2.200/2026 - Novas Regras de Contribuição Previdenciária",
-    tipo: "legislacao",
-    categoria: "Previdenciaria",
-    orgao_emissor: "Receita Federal",
-    numero_norma: "IN RFB nº 2.200/2026",
-    data_publicacao: "2026-03-18",
-    resumo_executivo: "Instrução normativa que altera as faixas de contribuição previdenciária e atualiza os procedimentos de recolhimento para 2026.",
-    comentario_tecnico: "As novas faixas refletem o reajuste do salário mínimo e do teto do INSS.",
-    exemplo_pratico: "Empregado com salário de R$ 3.500: antes contribuía R$ 297,50, agora contribui R$ 301,00.",
-    tags: ["INSS", "Contribuição", "Tabela"],
-    nivel_acesso: "gratuito",
-    destaque: true,
-    visualizacoes: 1800,
-    status: "publicado",
-    created_at: "2026-03-18",
-    updated_at: "2026-03-18",
-  },
-  {
-    id: "5",
-    titulo: "Aposentadoria por Idade: Regras de Transição 2026",
-    tipo: "artigo",
-    categoria: "Previdenciaria",
-    orgao_emissor: "INSS",
-    data_publicacao: "2026-03-12",
-    resumo_executivo: "Análise completa das regras de transição para aposentadoria por idade em 2026, com simulações e exemplos práticos.",
-    tags: ["Aposentadoria", "INSS", "Reforma"],
-    nivel_acesso: "premium",
-    destaque: false,
-    visualizacoes: 1450,
-    status: "publicado",
-    created_at: "2026-03-12",
-    updated_at: "2026-03-12",
-  },
-  // Contábil
-  {
-    id: "6",
-    titulo: "NBC TG 1000 (R2) - Contabilidade para PMEs Atualizada",
-    tipo: "legislacao",
-    categoria: "Contabil",
-    orgao_emissor: "CFC",
-    numero_norma: "NBC TG 1000 (R2)",
-    data_publicacao: "2026-03-16",
-    resumo_executivo: "Revisão da norma contábil para pequenas e médias empresas, com novas orientações sobre reconhecimento de receitas e instrumentos financeiros.",
-    comentario_tecnico: "A revisão alinha a norma brasileira com as últimas atualizações do IFRS for SMEs.",
-    tags: ["NBC", "PME", "IFRS"],
-    nivel_acesso: "gratuito",
-    destaque: true,
-    visualizacoes: 920,
-    status: "publicado",
-    created_at: "2026-03-16",
-    updated_at: "2026-03-16",
-  },
-  {
-    id: "7",
-    titulo: "Escrituração Contábil Digital (ECD) 2026: Guia Prático",
-    tipo: "artigo",
-    categoria: "Contabil",
-    orgao_emissor: "RFB",
-    data_publicacao: "2026-03-08",
-    resumo_executivo: "Passo a passo para entrega da ECD 2026 com as novas exigências de validação e prazos atualizados.",
-    tags: ["ECD", "SPED", "Escrituração"],
-    nivel_acesso: "premium",
-    destaque: false,
-    visualizacoes: 670,
-    status: "publicado",
-    created_at: "2026-03-08",
-    updated_at: "2026-03-08",
-  },
-  // Fiscal
-  {
     id: "8",
     titulo: "Reforma Tributária: Regulamentação do IBS e CBS",
     tipo: "legislacao",
@@ -134,8 +48,8 @@ export const mockConteudos: Conteudo[] = [
     orgao_emissor: "Congresso Nacional",
     numero_norma: "LC 214/2025",
     data_publicacao: "2026-03-22",
-    resumo_executivo: "Análise da regulamentação do IBS (Imposto sobre Bens e Serviços) e CBS (Contribuição sobre Bens e Serviços) com cronograma de implementação.",
-    comentario_tecnico: "A transição será gradual entre 2026 e 2033. Empresas devem se preparar para o período de convivência dos dois sistemas.",
+    resumo_executivo: "Análise da regulamentação do IBS e CBS com cronograma de implementação.",
+    comentario_tecnico: "A transição será gradual entre 2026 e 2033.",
     exemplo_pratico: "Comércio varejista: simulação de carga tributária comparando ICMS/PIS/COFINS atual vs. IBS/CBS.",
     tags: ["Reforma Tributária", "IBS", "CBS", "ICMS"],
     nivel_acesso: "gratuito",
@@ -145,46 +59,13 @@ export const mockConteudos: Conteudo[] = [
     created_at: "2026-03-22",
     updated_at: "2026-03-22",
   },
-  {
-    id: "9",
-    titulo: "ICMS-ST: Novas MVAs para 2026",
-    tipo: "legislacao",
-    categoria: "Fiscal",
-    orgao_emissor: "CONFAZ",
-    numero_norma: "Convênio ICMS 52/2026",
-    data_publicacao: "2026-03-14",
-    resumo_executivo: "Atualização das Margens de Valor Agregado (MVA) para produtos sujeitos à substituição tributária do ICMS.",
-    tags: ["ICMS", "MVA", "Substituição Tributária"],
-    nivel_acesso: "gratuito",
-    destaque: false,
-    visualizacoes: 1100,
-    status: "publicado",
-    created_at: "2026-03-14",
-    updated_at: "2026-03-14",
-  },
-  {
-    id: "10",
-    titulo: "EFD-Reinf: Série R-4000 Obrigatória",
-    tipo: "artigo",
-    categoria: "Fiscal",
-    orgao_emissor: "RFB",
-    data_publicacao: "2026-03-05",
-    resumo_executivo: "A série R-4000 da EFD-Reinf passa a ser obrigatória para todas as empresas. Entenda os eventos e como se adequar.",
-    tags: ["EFD-Reinf", "SPED", "Retenções"],
-    nivel_acesso: "premium",
-    destaque: false,
-    visualizacoes: 780,
-    status: "publicado",
-    created_at: "2026-03-05",
-    updated_at: "2026-03-05",
-  },
 ];
 
-export const mockPrazos: PrazoObrigacao[] = [
+const mockPrazos: PrazoObrigacao[] = [
   {
     id: "p1",
     titulo: "DCTF Mensal - Competência Fevereiro/2026",
-    descricao: "Entrega da Declaração de Débitos e Créditos Tributários Federais referente à competência de fevereiro de 2026.",
+    descricao: "Entrega da DCTF referente à competência de fevereiro de 2026.",
     data_vencimento: "2026-04-15",
     recorrencia: "Mensal",
     categoria: "Fiscal",
@@ -195,7 +76,7 @@ export const mockPrazos: PrazoObrigacao[] = [
   {
     id: "p2",
     titulo: "GFIP/SEFIP - Competência Março/2026",
-    descricao: "Entrega da Guia de Recolhimento do FGTS e de Informações à Previdência Social.",
+    descricao: "Entrega da Guia de Recolhimento do FGTS.",
     data_vencimento: "2026-04-07",
     recorrencia: "Mensal",
     categoria: "Trabalhista",
@@ -205,30 +86,8 @@ export const mockPrazos: PrazoObrigacao[] = [
   },
   {
     id: "p3",
-    titulo: "eSocial - Eventos Periódicos Março/2026",
-    descricao: "Prazo para envio dos eventos periódicos do eSocial (S-1200, S-1210, S-1299).",
-    data_vencimento: "2026-04-15",
-    recorrencia: "Mensal",
-    categoria: "Trabalhista",
-    orgao_responsavel: "Ministério do Trabalho",
-    nivel_acesso: "gratuito",
-    created_at: "2026-03-01",
-  },
-  {
-    id: "p4",
-    titulo: "EFD-Contribuições - Competência Fevereiro/2026",
-    descricao: "Entrega da Escrituração Fiscal Digital das Contribuições (PIS/COFINS).",
-    data_vencimento: "2026-04-10",
-    recorrencia: "Mensal",
-    categoria: "Fiscal",
-    orgao_responsavel: "Receita Federal",
-    nivel_acesso: "gratuito",
-    created_at: "2026-03-01",
-  },
-  {
-    id: "p5",
     titulo: "DAS - Simples Nacional Março/2026",
-    descricao: "Pagamento do Documento de Arrecadação do Simples Nacional referente a março/2026.",
+    descricao: "Pagamento do DAS referente a março/2026.",
     data_vencimento: "2026-04-20",
     recorrencia: "Mensal",
     categoria: "Fiscal",
@@ -237,20 +96,9 @@ export const mockPrazos: PrazoObrigacao[] = [
     created_at: "2026-03-01",
   },
   {
-    id: "p6",
-    titulo: "ECD - Escrituração Contábil Digital Ano-Calendário 2025",
-    descricao: "Entrega da Escrituração Contábil Digital referente ao ano-calendário de 2025.",
-    data_vencimento: "2026-05-30",
-    recorrencia: "Anual",
-    categoria: "Contabil",
-    orgao_responsavel: "Receita Federal",
-    nivel_acesso: "gratuito",
-    created_at: "2026-03-01",
-  },
-  {
-    id: "p7",
-    titulo: "DIRPF 2026 - Declaração do IR Pessoa Física",
-    descricao: "Prazo final para entrega da Declaração de Imposto de Renda Pessoa Física 2026, ano-calendário 2025.",
+    id: "p4",
+    titulo: "DIRPF 2026",
+    descricao: "Prazo final para entrega da DIRPF 2026.",
     data_vencimento: "2026-05-31",
     recorrencia: "Anual",
     categoria: "Fiscal",
@@ -258,19 +106,96 @@ export const mockPrazos: PrazoObrigacao[] = [
     nivel_acesso: "gratuito",
     created_at: "2026-03-01",
   },
-  {
-    id: "p8",
-    titulo: "GPS - Guia da Previdência Social Março/2026",
-    descricao: "Recolhimento da contribuição previdenciária do contribuinte individual e facultativo.",
-    data_vencimento: "2026-04-15",
-    recorrencia: "Mensal",
-    categoria: "Previdenciaria",
-    orgao_responsavel: "INSS / Receita Federal",
-    nivel_acesso: "gratuito",
-    created_at: "2026-03-01",
-  },
 ];
 
+// Fetch conteudos from Supabase, fallback to mock
+export async function fetchConteudos(): Promise<Conteudo[]> {
+  try {
+    const { data, error } = await supabase
+      .from('conteudos')
+      .select('*')
+      .eq('status', 'publicado')
+      .order('data_publicacao', { ascending: false });
+
+    if (error) throw error;
+    if (data && data.length > 0) {
+      return data.map(mapDbToConteudo);
+    }
+  } catch (e) {
+    console.error('Error fetching conteudos:', e);
+  }
+  return mockConteudos;
+}
+
+export async function fetchConteudosByCategoria(categoria: string): Promise<Conteudo[]> {
+  try {
+    const { data, error } = await supabase
+      .from('conteudos')
+      .select('*')
+      .eq('status', 'publicado')
+      .eq('categoria', categoria)
+      .order('data_publicacao', { ascending: false });
+
+    if (error) throw error;
+    if (data && data.length > 0) {
+      return data.map(mapDbToConteudo);
+    }
+  } catch (e) {
+    console.error('Error fetching conteudos by categoria:', e);
+  }
+  return mockConteudos.filter(c => c.categoria === categoria);
+}
+
+export async function fetchConteudosDestaque(): Promise<Conteudo[]> {
+  try {
+    const { data, error } = await supabase
+      .from('conteudos')
+      .select('*')
+      .eq('status', 'publicado')
+      .eq('destaque', true)
+      .order('data_publicacao', { ascending: false });
+
+    if (error) throw error;
+    if (data && data.length > 0) {
+      return data.map(mapDbToConteudo);
+    }
+  } catch (e) {
+    console.error('Error fetching destaques:', e);
+  }
+  return mockConteudos.filter(c => c.destaque);
+}
+
+export async function fetchPrazos(): Promise<PrazoObrigacao[]> {
+  try {
+    const { data, error } = await supabase
+      .from('prazos_obrigacoes')
+      .select('*')
+      .gte('data_vencimento', new Date().toISOString().split('T')[0])
+      .order('data_vencimento', { ascending: true });
+
+    if (error) throw error;
+    if (data && data.length > 0) {
+      return data.map(mapDbToPrazo);
+    }
+  } catch (e) {
+    console.error('Error fetching prazos:', e);
+  }
+  return mockPrazos.filter(p => new Date(p.data_vencimento) >= new Date())
+    .sort((a, b) => new Date(a.data_vencimento).getTime() - new Date(b.data_vencimento).getTime());
+}
+
+export async function triggerContentUpdate(): Promise<{ success: boolean; message?: string; error?: string }> {
+  try {
+    const { data, error } = await supabase.functions.invoke('update-content');
+    if (error) throw error;
+    return data;
+  } catch (e) {
+    console.error('Error triggering content update:', e);
+    return { success: false, error: String(e) };
+  }
+}
+
+// Legacy sync functions for backward compatibility
 export const getConteudosByCategoria = (categoria: string) =>
   mockConteudos.filter((c) => c.categoria === categoria);
 
@@ -281,3 +206,44 @@ export const getPrazosProximos = () =>
   mockPrazos
     .filter((p) => new Date(p.data_vencimento) >= new Date())
     .sort((a, b) => new Date(a.data_vencimento).getTime() - new Date(b.data_vencimento).getTime());
+
+// Helpers
+function mapDbToConteudo(row: Record<string, unknown>): Conteudo {
+  return {
+    id: row.id as string,
+    titulo: row.titulo as string,
+    tipo: (row.tipo as string) as Conteudo['tipo'],
+    categoria: (row.categoria as string) as Conteudo['categoria'],
+    orgao_emissor: row.orgao_emissor as string | undefined,
+    numero_norma: row.numero_norma as string | undefined,
+    data_publicacao: row.data_publicacao as string,
+    texto_oficial: row.texto_oficial as string | undefined,
+    resumo_executivo: row.resumo_executivo as string | undefined,
+    comentario_tecnico: row.comentario_tecnico as string | undefined,
+    exemplo_pratico: row.exemplo_pratico as string | undefined,
+    modelo_documento: row.modelo_documento as string | undefined,
+    dicas_alertas: row.dicas_alertas as string | undefined,
+    tags: (row.tags as string[]) || [],
+    nivel_acesso: (row.nivel_acesso as string) as Conteudo['nivel_acesso'],
+    destaque: row.destaque as boolean,
+    visualizacoes: row.visualizacoes as number,
+    autor_id: row.autor_id as string | undefined,
+    status: (row.status as string) as Conteudo['status'],
+    created_at: row.created_at as string,
+    updated_at: row.updated_at as string,
+  };
+}
+
+function mapDbToPrazo(row: Record<string, unknown>): PrazoObrigacao {
+  return {
+    id: row.id as string,
+    titulo: row.titulo as string,
+    descricao: row.descricao as string | undefined,
+    data_vencimento: row.data_vencimento as string,
+    recorrencia: row.recorrencia as string | undefined,
+    categoria: (row.categoria as string) as PrazoObrigacao['categoria'],
+    orgao_responsavel: row.orgao_responsavel as string | undefined,
+    nivel_acesso: (row.nivel_acesso as string) as PrazoObrigacao['nivel_acesso'],
+    created_at: row.created_at as string,
+  };
+}
