@@ -146,12 +146,10 @@ const App = () => (
                 <Route path="/comercial/importacao-exportacao" element={<ImportacaoExportacao />} />
                 <Route path="/sped/ecd" element={<Ecd />} />
                 
-                <Route path="*" element={<NotFound />} />
-              </Routes>
-            </BrowserRouter>
-          </TooltipProvider>
-        </UsuariosProvider>
-      </AdminProvider>
+              <Route path="*" element={<NotFound />} />
+            </Routes>
+          </BrowserRouter>
+        </TooltipProvider>
     </AuthProvider>
   </QueryClientProvider>
 );
