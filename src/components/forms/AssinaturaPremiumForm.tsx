@@ -7,7 +7,6 @@ import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@
 import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group";
 import { toast } from "@/hooks/use-toast";
 import { useAuth } from "@/contexts/AuthContext";
-import { useUsuarios } from "@/contexts/UsuariosContext";
 import PlanSelection from './PlanSelection';
 import SolicitacaoOrcamentoForm from './SolicitacaoOrcamentoForm';
 
