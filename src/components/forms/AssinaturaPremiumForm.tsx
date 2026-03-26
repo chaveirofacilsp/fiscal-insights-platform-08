@@ -7,7 +7,6 @@ import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@
 import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group";
 import { toast } from "@/hooks/use-toast";
 import { useAuth } from "@/contexts/AuthContext";
-import { useUsuarios } from "@/contexts/UsuariosContext";
 import PlanSelection from './PlanSelection';
 import SolicitacaoOrcamentoForm from './SolicitacaoOrcamentoForm';
 
@@ -18,7 +17,7 @@ interface AssinaturaPremiumFormProps {
 
 const AssinaturaPremiumForm = ({ isOpen, onClose }: AssinaturaPremiumFormProps) => {
   const { signUp } = useAuth();
-  const { adicionarUsuario } = useUsuarios();
+  // Profile is auto-created by database trigger on signup
   const [loading, setLoading] = useState(false);
   const [selectedPlan, setSelectedPlan] = useState('');
   const [formData, setFormData] = useState({
@@ -63,18 +62,7 @@ const AssinaturaPremiumForm = ({ isOpen, onClose }: AssinaturaPremiumFormProps) 
 
       if (signUpError) throw signUpError;
 
-      // Adicionar usuário ao contexto com status pendente
-      await adicionarUsuario({
-        nome: formData.nome,
-        email: formData.email,
-        plano: selectedPlan === 'calendario-fiscal' ? 'basico' : 'gratuito',
-        status: 'pendente',
-        dataRegistro: new Date().toISOString(),
-        ultimoAcesso: new Date().toISOString(),
-        documento: formData.documento,
-        empresa: formData.empresa,
-        telefone: formData.telefone
-      });
+      // Profile is auto-created by database trigger
 
       toast({
         title: "Solicitação enviada com sucesso!",
