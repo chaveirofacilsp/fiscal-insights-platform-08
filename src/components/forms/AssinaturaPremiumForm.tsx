@@ -17,7 +17,7 @@ interface AssinaturaPremiumFormProps {
 
 const AssinaturaPremiumForm = ({ isOpen, onClose }: AssinaturaPremiumFormProps) => {
   const { signUp } = useAuth();
-  const { adicionarUsuario } = useUsuarios();
+  // Profile is auto-created by database trigger on signup
   const [loading, setLoading] = useState(false);
   const [selectedPlan, setSelectedPlan] = useState('');
   const [formData, setFormData] = useState({
