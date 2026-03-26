@@ -62,18 +62,7 @@ const AssinaturaPremiumForm = ({ isOpen, onClose }: AssinaturaPremiumFormProps) 
 
       if (signUpError) throw signUpError;
 
-      // Adicionar usuário ao contexto com status pendente
-      await adicionarUsuario({
-        nome: formData.nome,
-        email: formData.email,
-        plano: selectedPlan === 'calendario-fiscal' ? 'basico' : 'gratuito',
-        status: 'pendente',
-        dataRegistro: new Date().toISOString(),
-        ultimoAcesso: new Date().toISOString(),
-        documento: formData.documento,
-        empresa: formData.empresa,
-        telefone: formData.telefone
-      });
+      // Profile is auto-created by database trigger
 
       toast({
         title: "Solicitação enviada com sucesso!",
