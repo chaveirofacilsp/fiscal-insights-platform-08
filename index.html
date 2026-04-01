@@ -1,34 +1,62 @@
 <!DOCTYPE html>
-<html lang="pt-BR">
+<html lang="pt-BR" dir="ltr">
   <head>
     <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
     
     <!-- Primary SEO -->
-    <title>Conecta Fisco - Legislação Trabalhista, Previdenciária, Contábil e Fiscal para Contadores</title>
-    <meta name="description" content="Portal de legislação interpretada para contadores e profissionais de contabilidade. Atualizações de CLT, eSocial, ICMS, SPED, Simples Nacional, INSS, IR e obrigações fiscais com comentários práticos." />
-    <meta name="keywords" content="legislação trabalhista, legislação contábil, legislação fiscal, legislação previdenciária, contabilidade, contador, eSocial, SPED, ICMS, ISS, IPI, PIS, COFINS, Simples Nacional, INSS, FGTS, imposto de renda, obrigações acessórias, reforma tributária, CLT, folha de pagamento, ECD, ECF, DARF, GFIP, DIRF, calculadora INSS, simulador tributário" />
+    <title>Conecta Fisco - Legislação Trabalhista, Previdenciária, Contábil e Fiscal | Portal para Contadores</title>
+    <meta name="description" content="Portal líder de legislação interpretada para contadores. CLT, eSocial, ICMS, SPED, Simples Nacional, INSS, IR, PIS/COFINS com comentários técnicos, simuladores, calculadoras e calendário fiscal atualizado diariamente." />
+    <meta name="keywords" content="legislação trabalhista, legislação contábil, legislação fiscal, legislação previdenciária, contabilidade, contador, eSocial, SPED, ICMS, ISS, IPI, PIS, COFINS, Simples Nacional, INSS, FGTS, imposto de renda, obrigações acessórias, reforma tributária, CLT, folha de pagamento, ECD, ECF, DARF, GFIP, DIRF, calculadora INSS, simulador tributário, calendário fiscal, obrigações fiscais, portal contábil, legislação brasileira, tributos federais, tributos estaduais, substituição tributária, nota fiscal eletrônica, escrituração contábil" />
     <meta name="author" content="Conecta Fisco" />
     <meta name="robots" content="index, follow, max-image-preview:large, max-snippet:-1, max-video-preview:-1" />
+    <meta name="googlebot" content="index, follow, max-snippet:-1, max-image-preview:large, max-video-preview:-1" />
+    <meta name="bingbot" content="index, follow" />
     <link rel="canonical" href="https://conectafisco.com.br" />
+    
+    <!-- Performance & Security -->
+    <meta name="theme-color" content="#1e40af" />
+    <meta name="mobile-web-app-capable" content="yes" />
+    <meta name="apple-mobile-web-app-capable" content="yes" />
+    <meta name="apple-mobile-web-app-status-bar-style" content="default" />
+    <meta name="apple-mobile-web-app-title" content="Conecta Fisco" />
+    <meta name="application-name" content="Conecta Fisco" />
+    <meta name="format-detection" content="telephone=no" />
     
     <!-- Open Graph / Facebook -->
     <meta property="og:type" content="website" />
     <meta property="og:url" content="https://conectafisco.com.br" />
     <meta property="og:title" content="Conecta Fisco - Legislação Interpretada para Contadores" />
-    <meta property="og:description" content="Portal completo de legislação trabalhista, previdenciária, contábil e fiscal com comentários práticos, simuladores e ferramentas para profissionais de contabilidade." />
+    <meta property="og:description" content="Portal completo de legislação trabalhista, previdenciária, contábil e fiscal com comentários práticos, simuladores, calculadoras e calendário fiscal para profissionais de contabilidade." />
     <meta property="og:site_name" content="Conecta Fisco" />
     <meta property="og:locale" content="pt_BR" />
+    <meta property="og:image" content="https://conectafisco.com.br/og-image.jpg" />
+    <meta property="og:image:width" content="1200" />
+    <meta property="og:image:height" content="630" />
+    <meta property="og:image:alt" content="Conecta Fisco - Portal de Legislação para Contadores" />
     
     <!-- Twitter -->
     <meta name="twitter:card" content="summary_large_image" />
     <meta name="twitter:title" content="Conecta Fisco - Legislação para Contadores" />
-    <meta name="twitter:description" content="Legislação trabalhista, previdenciária, contábil e fiscal interpretada e aplicável. Ferramentas, simuladores e atualizações para contadores." />
+    <meta name="twitter:description" content="Legislação trabalhista, previdenciária, contábil e fiscal interpretada e aplicável. Ferramentas, simuladores e atualizações diárias para contadores." />
+    <meta name="twitter:image" content="https://conectafisco.com.br/og-image.jpg" />
     
     <!-- Geo / Regional -->
     <meta name="geo.region" content="BR" />
     <meta name="geo.placename" content="Brasil" />
     <meta name="content-language" content="pt-BR" />
+    <meta name="language" content="Portuguese" />
+    
+    <!-- Google Ads / Verification placeholders -->
+    <!-- <meta name="google-site-verification" content="SEU_CODIGO_AQUI" /> -->
+    <!-- <meta name="google-adsense-account" content="ca-pub-XXXXXXXXXXXXXXXX" /> -->
+
+    <!-- Preconnect for performance -->
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link rel="dns-prefetch" href="https://www.googletagmanager.com" />
+    <link rel="dns-prefetch" href="https://www.google-analytics.com" />
     
     <!-- Structured Data - Organization -->
     <script type="application/ld+json">
@@ -37,12 +65,19 @@
       "@type": "Organization",
       "name": "Conecta Fisco",
       "url": "https://conectafisco.com.br",
-      "description": "Portal de legislação interpretada e aplicável para profissionais de contabilidade",
+      "logo": "https://conectafisco.com.br/logo.png",
+      "description": "Portal de legislação interpretada e aplicável para profissionais de contabilidade no Brasil",
+      "foundingDate": "2026",
+      "sameAs": [],
       "contactPoint": {
         "@type": "ContactPoint",
-        "email": "contato@conectafisco.com",
+        "email": "contato@conectafisco.com.br",
         "contactType": "customer support",
-        "availableLanguage": "Portuguese"
+        "availableLanguage": ["Portuguese"]
+      },
+      "address": {
+        "@type": "PostalAddress",
+        "addressCountry": "BR"
       }
     }
     </script>
@@ -53,11 +88,16 @@
       "@context": "https://schema.org",
       "@type": "WebSite",
       "name": "Conecta Fisco",
+      "alternateName": "Portal Conecta Fisco",
       "url": "https://conectafisco.com.br",
-      "description": "Portal de legislação trabalhista, previdenciária, contábil e fiscal para contadores",
+      "description": "Portal de legislação trabalhista, previdenciária, contábil e fiscal para contadores brasileiros",
+      "inLanguage": "pt-BR",
       "potentialAction": {
         "@type": "SearchAction",
-        "target": "https://conectafisco.com.br/busca-avancada?q={search_term_string}",
+        "target": {
+          "@type": "EntryPoint",
+          "urlTemplate": "https://conectafisco.com.br/busca-avancada?q={search_term_string}"
+        },
         "query-input": "required name=search_term_string"
       }
     }
@@ -75,7 +115,9 @@
         {"@type": "ListItem", "position": 4, "name": "Legislação Contábil", "item": "https://conectafisco.com.br/legislacao/contabil"},
         {"@type": "ListItem", "position": 5, "name": "Legislação Fiscal", "item": "https://conectafisco.com.br/legislacao/fiscal"},
         {"@type": "ListItem", "position": 6, "name": "Ferramentas e Simuladores", "item": "https://conectafisco.com.br/ferramentas-uteis"},
-        {"@type": "ListItem", "position": 7, "name": "Calendário Fiscal", "item": "https://conectafisco.com.br/calendario-fiscal"}
+        {"@type": "ListItem", "position": 7, "name": "Calendário Fiscal", "item": "https://conectafisco.com.br/calendario-fiscal"},
+        {"@type": "ListItem", "position": 8, "name": "Cursos", "item": "https://conectafisco.com.br/cursos"},
+        {"@type": "ListItem", "position": 9, "name": "Planos", "item": "https://conectafisco.com.br/planos"}
       ]
     }
     </script>
@@ -117,6 +159,22 @@
             "@type": "Answer",
             "text": "O calendário fiscal apresenta os principais prazos de entrega e vencimentos de obrigações fiscais, trabalhistas e previdenciárias, com filtros por categoria e alertas de urgência para ajudar contadores a não perder nenhum prazo."
           }
+        },
+        {
+          "@type": "Question",
+          "name": "Quanto custa usar o Conecta Fisco?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "O Conecta Fisco oferece um plano gratuito com acesso a conteúdos básicos, além de planos pagos (Básico, Premium e Corporativo) com acesso a conteúdos exclusivos, ferramentas avançadas, planilhas mensais e suporte prioritário."
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "O Conecta Fisco é atualizado com frequência?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "Sim. O portal é atualizado diariamente com novas legislações, normas, instruções normativas e alterações legais nas áreas trabalhista, previdenciária, contábil e fiscal, sempre com comentários técnicos e orientações práticas."
+          }
         }
       ]
     }
@@ -129,16 +187,54 @@
       "@type": "ProfessionalService",
       "name": "Conecta Fisco",
       "url": "https://conectafisco.com.br",
-      "description": "Soluções fiscais completas para contadores - legislação interpretada, ferramentas e simuladores",
+      "description": "Portal líder de legislação interpretada para contadores brasileiros - ferramentas, simuladores, calendário fiscal e cursos",
+      "priceRange": "R$ 0 - R$ 299/mês",
       "areaServed": {
         "@type": "Country",
         "name": "Brasil"
       },
-      "serviceType": ["Consultoria Contábil", "Legislação Tributária", "Ferramentas Fiscais", "Cursos para Contadores"],
+      "serviceType": ["Consultoria Contábil", "Legislação Tributária", "Ferramentas Fiscais", "Cursos para Contadores", "Calendário de Obrigações Fiscais"],
       "audience": {
         "@type": "Audience",
-        "audienceType": "Contadores, Escritórios de Contabilidade, Estudantes de Contabilidade"
+        "audienceType": "Contadores, Escritórios de Contabilidade, Estudantes de Ciências Contábeis, Profissionais Tributários"
+      },
+      "hasOfferCatalog": {
+        "@type": "OfferCatalog",
+        "name": "Planos Conecta Fisco",
+        "itemListElement": [
+          {
+            "@type": "Offer",
+            "name": "Plano Gratuito",
+            "description": "Acesso a conteúdos básicos de legislação",
+            "price": "0",
+            "priceCurrency": "BRL"
+          },
+          {
+            "@type": "Offer",
+            "name": "Plano Premium",
+            "description": "Acesso completo a legislação interpretada, ferramentas e suporte",
+            "priceCurrency": "BRL"
+          }
+        ]
       }
+    }
+    </script>
+
+    <!-- Structured Data - SoftwareApplication (for tools/calculators) -->
+    <script type="application/ld+json">
+    {
+      "@context": "https://schema.org",
+      "@type": "SoftwareApplication",
+      "name": "Conecta Fisco - Ferramentas para Contadores",
+      "applicationCategory": "BusinessApplication",
+      "operatingSystem": "Web",
+      "offers": {
+        "@type": "Offer",
+        "price": "0",
+        "priceCurrency": "BRL"
+      },
+      "description": "Calculadoras de INSS, simuladores do Simples Nacional, calendário fiscal e ferramentas tributárias online para contadores",
+      "featureList": ["Calculadora INSS", "Simulador Simples Nacional", "Calendário Fiscal", "Consulta de Códigos de Receita", "Alíquotas por Estado"]
     }
     </script>
   </head>

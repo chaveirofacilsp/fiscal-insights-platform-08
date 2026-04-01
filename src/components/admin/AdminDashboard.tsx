@@ -117,6 +117,14 @@ const AdminDashboard = () => {
     mes: '', ano: '', arquivo_url: '', descricao: ''
   });
 
+  // User edit modal
+  const [userModalOpen, setUserModalOpen] = useState(false);
+  const [editingUser, setEditingUser] = useState<Profile | null>(null);
+  const [userForm, setUserForm] = useState({
+    nome_completo: '', email: '', telefone: '', empresa: '', documento: '',
+    plano: 'gratuito', status: 'pendente', habilitado: true
+  });
+
   useEffect(() => { loadAllData(); }, []);
 
   const loadAllData = async () => {
@@ -253,6 +261,37 @@ const AdminDashboard = () => {
     const { error } = await supabase.from('profiles').update(updates).eq('id', id);
     if (error) toast({ title: "Erro", description: error.message, variant: "destructive" });
     else { toast({ title: "Usuário atualizado!" }); loadProfiles(); }
+  };
+
+  const openUserModal = (profile: Profile) => {
+    setEditingUser(profile);
+    setUserForm({
+      nome_completo: profile.nome_completo || '',
+      email: profile.email || '',
+      telefone: profile.telefone || '',
+      empresa: profile.empresa || '',
+      documento: profile.documento || '',
+      plano: profile.plano || 'gratuito',
+      status: profile.status || 'pendente',
+      habilitado: profile.habilitado !== false
+    });
+    setUserModalOpen(true);
+  };
+
+  const saveUser = async () => {
+    if (!editingUser) return;
+    const { error } = await supabase.from('profiles').update({
+      nome_completo: userForm.nome_completo || null,
+      telefone: userForm.telefone || null,
+      empresa: userForm.empresa || null,
+      documento: userForm.documento || null,
+      plano: userForm.plano,
+      status: userForm.status,
+      habilitado: userForm.habilitado,
+      updated_at: new Date().toISOString()
+    }).eq('id', editingUser.id);
+    if (error) toast({ title: "Erro", description: error.message, variant: "destructive" });
+    else { toast({ title: "Usuário atualizado!" }); setUserModalOpen(false); loadProfiles(); }
   };
 
   // ===== PLANO CRUD =====
@@ -559,9 +598,8 @@ const AdminDashboard = () => {
                         </TableCell>
                         <TableCell>{p.created_at ? new Date(p.created_at).toLocaleDateString('pt-BR') : '-'}</TableCell>
                         <TableCell>
-                          <div className="text-xs text-muted-foreground">
-                            {p.telefone && <div>📞 {p.telefone}</div>}
-                            {p.empresa && <div>🏢 {p.empresa}</div>}
+                          <div className="flex space-x-1">
+                            <Button variant="outline" size="sm" onClick={() => openUserModal(p)}><Edit className="w-3 h-3" /></Button>
                           </div>
                         </TableCell>
                       </TableRow>
@@ -923,6 +961,55 @@ const AdminDashboard = () => {
             <div className="flex space-x-2">
               <Button onClick={savePlanilha} className="flex-1"><Save className="w-4 h-4 mr-2" /> Salvar</Button>
               <Button variant="outline" onClick={() => setPlanilhaModalOpen(false)}><X className="w-4 h-4 mr-2" /> Cancelar</Button>
+            </div>
+          </div>
+        </DialogContent>
+      </Dialog>
+      {/* USER EDIT MODAL */}
+      <Dialog open={userModalOpen} onOpenChange={setUserModalOpen}>
+        <DialogContent className="max-w-lg">
+          <DialogHeader><DialogTitle>Editar Usuário</DialogTitle></DialogHeader>
+          <div className="space-y-4">
+            <div><Label>Nome Completo</Label><Input value={userForm.nome_completo} onChange={e => setUserForm({...userForm, nome_completo: e.target.value})} /></div>
+            <div><Label>Email</Label><Input value={userForm.email} disabled className="bg-muted" /></div>
+            <div className="grid grid-cols-2 gap-4">
+              <div><Label>Telefone</Label><Input value={userForm.telefone} onChange={e => setUserForm({...userForm, telefone: e.target.value})} /></div>
+              <div><Label>Documento (CPF/CNPJ)</Label><Input value={userForm.documento} onChange={e => setUserForm({...userForm, documento: e.target.value})} /></div>
+            </div>
+            <div><Label>Empresa</Label><Input value={userForm.empresa} onChange={e => setUserForm({...userForm, empresa: e.target.value})} /></div>
+            <div className="grid grid-cols-2 gap-4">
+              <div><Label>Plano</Label>
+                <Select value={userForm.plano} onValueChange={v => setUserForm({...userForm, plano: v})}>
+                  <SelectTrigger><SelectValue /></SelectTrigger>
+                  <SelectContent>
+                    <SelectItem value="gratuito">Gratuito</SelectItem>
+                    <SelectItem value="basico">Básico</SelectItem>
+                    <SelectItem value="premium">Premium</SelectItem>
+                    <SelectItem value="corporativo">Corporativo</SelectItem>
+                  </SelectContent>
+                </Select>
+              </div>
+              <div><Label>Status</Label>
+                <Select value={userForm.status} onValueChange={v => setUserForm({...userForm, status: v})}>
+                  <SelectTrigger><SelectValue /></SelectTrigger>
+                  <SelectContent>
+                    <SelectItem value="ativo">Ativo</SelectItem>
+                    <SelectItem value="pendente">Pendente</SelectItem>
+                    <SelectItem value="bloqueado">Bloqueado</SelectItem>
+                  </SelectContent>
+                </Select>
+              </div>
+            </div>
+            <div className="flex items-center space-x-2">
+              <Label>Habilitado:</Label>
+              <Button variant="outline" size="sm" onClick={() => setUserForm({...userForm, habilitado: !userForm.habilitado})}
+                className={userForm.habilitado ? 'text-green-600 border-green-300' : 'text-red-600 border-red-300'}>
+                {userForm.habilitado ? <><UserCheck className="w-4 h-4 mr-1" /> Sim</> : <><UserX className="w-4 h-4 mr-1" /> Não</>}
+              </Button>
+            </div>
+            <div className="flex space-x-2">
+              <Button onClick={saveUser} className="flex-1"><Save className="w-4 h-4 mr-2" /> Salvar</Button>
+              <Button variant="outline" onClick={() => setUserModalOpen(false)}><X className="w-4 h-4 mr-2" /> Cancelar</Button>
             </div>
           </div>
         </DialogContent>
