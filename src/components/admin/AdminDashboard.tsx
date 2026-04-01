@@ -263,6 +263,37 @@ const AdminDashboard = () => {
     else { toast({ title: "Usuário atualizado!" }); loadProfiles(); }
   };
 
+  const openUserModal = (profile: Profile) => {
+    setEditingUser(profile);
+    setUserForm({
+      nome_completo: profile.nome_completo || '',
+      email: profile.email || '',
+      telefone: profile.telefone || '',
+      empresa: profile.empresa || '',
+      documento: profile.documento || '',
+      plano: profile.plano || 'gratuito',
+      status: profile.status || 'pendente',
+      habilitado: profile.habilitado !== false
+    });
+    setUserModalOpen(true);
+  };
+
+  const saveUser = async () => {
+    if (!editingUser) return;
+    const { error } = await supabase.from('profiles').update({
+      nome_completo: userForm.nome_completo || null,
+      telefone: userForm.telefone || null,
+      empresa: userForm.empresa || null,
+      documento: userForm.documento || null,
+      plano: userForm.plano,
+      status: userForm.status,
+      habilitado: userForm.habilitado,
+      updated_at: new Date().toISOString()
+    }).eq('id', editingUser.id);
+    if (error) toast({ title: "Erro", description: error.message, variant: "destructive" });
+    else { toast({ title: "Usuário atualizado!" }); setUserModalOpen(false); loadProfiles(); }
+  };
+
   // ===== PLANO CRUD =====
   const openPlanoModal = (plano?: Plano) => {
     if (plano) {
