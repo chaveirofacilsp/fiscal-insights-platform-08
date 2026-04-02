@@ -429,11 +429,12 @@ const AdminDashboard = () => {
       </div>
 
       <Tabs defaultValue="conteudos" className="w-full">
-        <TabsList className="grid w-full grid-cols-4 lg:grid-cols-8">
+        <TabsList className="grid w-full grid-cols-4 lg:grid-cols-9">
           <TabsTrigger value="conteudos"><FileText className="w-4 h-4 mr-1" /><span className="hidden sm:inline">Conteúdos</span></TabsTrigger>
           <TabsTrigger value="prazos"><Calendar className="w-4 h-4 mr-1" /><span className="hidden sm:inline">Prazos</span></TabsTrigger>
           <TabsTrigger value="usuarios"><Users className="w-4 h-4 mr-1" /><span className="hidden sm:inline">Usuários</span></TabsTrigger>
           <TabsTrigger value="planos"><CreditCard className="w-4 h-4 mr-1" /><span className="hidden sm:inline">Planos</span></TabsTrigger>
+          <TabsTrigger value="pagamentos"><Wallet className="w-4 h-4 mr-1" /><span className="hidden sm:inline">Pagamentos</span></TabsTrigger>
           <TabsTrigger value="solicitacoes"><ClipboardList className="w-4 h-4 mr-1" /><span className="hidden sm:inline">Solicitações</span></TabsTrigger>
           <TabsTrigger value="matriculas"><GraduationCap className="w-4 h-4 mr-1" /><span className="hidden sm:inline">Matrículas</span></TabsTrigger>
           <TabsTrigger value="planilhas"><FileSpreadsheet className="w-4 h-4 mr-1" /><span className="hidden sm:inline">Planilhas</span></TabsTrigger>
