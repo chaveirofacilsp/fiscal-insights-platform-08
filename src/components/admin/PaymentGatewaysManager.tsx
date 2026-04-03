@@ -84,8 +84,9 @@ const PaymentGatewaysManager = () => {
       });
     } else {
       setEditing(null);
+      const firstTemplate = GATEWAY_TEMPLATES[0];
       setForm({
-        gateway_name: '', display_name: '', public_key: '',
+        gateway_name: firstTemplate.name, display_name: firstTemplate.label, public_key: '',
         secret_key_encrypted: '', webhook_url: '', webhook_secret: '',
         is_active: false, environment: 'sandbox',
       });
