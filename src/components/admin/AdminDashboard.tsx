@@ -497,7 +497,11 @@ const AdminDashboard = () => {
           </Card>
         </TabsContent>
 
-        {/* PRAZOS TAB */}
+        {/* PÁGINAS TAB */}
+        <TabsContent value="paginas">
+          <PaginasManager />
+        </TabsContent>
+
         <TabsContent value="prazos">
           <Card>
             <CardHeader className="flex flex-row items-center justify-between">
