@@ -15,7 +15,7 @@ import { useAuth } from "@/contexts/AuthContext";
 import {
   Users, FileText, Calendar, Settings, Plus, Edit, Trash2, Save, X,
   Search, RefreshCw, Eye, BarChart3, CreditCard, ClipboardList,
-  GraduationCap, FileSpreadsheet, UserCheck, UserX, Check, Wallet
+  GraduationCap, FileSpreadsheet, UserCheck, UserX, Check, Wallet, Layout
 } from "lucide-react";
 import PaymentGatewaysManager from "./PaymentGatewaysManager";
 import PaginasManager from "./PaginasManager";
