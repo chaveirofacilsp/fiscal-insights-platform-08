@@ -172,6 +172,51 @@ export type Database = {
         }
         Relationships: []
       }
+      paginas_conteudo: {
+        Row: {
+          ativo: boolean | null
+          conteudo: string | null
+          created_at: string
+          id: string
+          imagem_url: string | null
+          metadata: Json | null
+          ordem: number | null
+          pagina: string
+          secao: string
+          subtitulo: string | null
+          titulo: string | null
+          updated_at: string
+        }
+        Insert: {
+          ativo?: boolean | null
+          conteudo?: string | null
+          created_at?: string
+          id?: string
+          imagem_url?: string | null
+          metadata?: Json | null
+          ordem?: number | null
+          pagina: string
+          secao: string
+          subtitulo?: string | null
+          titulo?: string | null
+          updated_at?: string
+        }
+        Update: {
+          ativo?: boolean | null
+          conteudo?: string | null
+          created_at?: string
+          id?: string
+          imagem_url?: string | null
+          metadata?: Json | null
+          ordem?: number | null
+          pagina?: string
+          secao?: string
+          subtitulo?: string | null
+          titulo?: string | null
+          updated_at?: string
+        }
+        Relationships: []
+      }
       payment_gateways: {
         Row: {
           additional_config: Json | null
