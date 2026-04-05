@@ -1,771 +1,336 @@
 import { useState, useEffect } from "react";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
-import { Badge } from "@/components/ui/badge";
 import { Input } from "@/components/ui/input";
-import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
-import { Dialog, DialogContent, DialogHeader, DialogTitle } from "@/components/ui/dialog";
 import { Textarea } from "@/components/ui/textarea";
+import { Label } from "@/components/ui/label";
+import { Badge } from "@/components/ui/badge";
+import { Dialog, DialogContent, DialogHeader, DialogTitle } from "@/components/ui/dialog";
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
+import { Switch } from "@/components/ui/switch";
+import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table";
 import { toast } from "@/hooks/use-toast";
-import { Eye, Pencil, Search, Filter, Globe } from "lucide-react";
+import { supabase } from "@/integrations/supabase/client";
+import {
+  Plus, Edit, Trash2, Save, X, Search,
+  Layout, Globe, ChevronDown, ChevronRight
+} from "lucide-react";
 
 interface PaginaConteudo {
   id: string;
-  nome: string;
-  titulo: string;
-  url: string;
-  categoria: string;
-  status: 'ativo' | 'inativo';
-  conteudo: {
-    heroTitle: string;
-    heroSubtitle: string;
-    heroDescription: string;
-    beneficios: string[];
-    servicos?: string[];
-    diferenciais?: string[];
-    depoimento?: {
-      texto: string;
-      autor: string;
-    };
-  };
+  pagina: string;
+  secao: string;
+  titulo: string | null;
+  subtitulo: string | null;
+  conteudo: string | null;
+  imagem_url: string | null;
+  metadata: any;
+  ordem: number | null;
+  ativo: boolean | null;
   created_at: string;
   updated_at: string;
 }
 
-const PaginasManager = () => {
-  const [paginas, setPaginas] = useState<PaginaConteudo[]>([
-    {
-      id: '1',
-      nome: 'Desenquadramento',
-      titulo: 'Desenquadramento de Empresas',
-      url: '/desenquadramento',
-      categoria: 'Simples Nacional',
-      status: 'ativo',
-      conteudo: {
-        heroTitle: 'Desenquadramento de Empresas',
-        heroSubtitle: 'Regularize Sua Situação Tributária com Segurança!',
-        heroDescription: 'Somos especialistas em Desenquadramento de MEI, Simples Nacional, ME e EPP...',
-        beneficios: [
-          'Atendimento Rápido e Personalizado',
-          'Transição Segura para o Novo Regime',
-          'Equipe Especializada em Legislação Atualizada'
-        ]
-      },
-      created_at: new Date().toISOString(),
-      updated_at: new Date().toISOString()
-    },
-    {
-      id: '2',
-      nome: 'Optantes',
-      titulo: 'Optantes Simples Nacional',
-      url: '/optantes',
-      categoria: 'Simples Nacional',
-      status: 'ativo',
-      conteudo: {
-        heroTitle: 'Simples Nacional',
-        heroSubtitle: 'Descubra se Sua Empresa Pode se Beneficiar!',
-        heroDescription: 'Nós ajudamos microempresas e empresas de pequeno porte...',
-        beneficios: [
-          'Pagamento de impostos em guia única (DAS)',
-          'Redução da carga tributária',
-          'Burocracia reduzida'
-        ]
-      },
-      created_at: new Date().toISOString(),
-      updated_at: new Date().toISOString()
-    },
-    {
-      id: '3',
-      nome: 'Sublimites',
-      titulo: 'Sublimites Simples Nacional',
-      url: '/sublimites',
-      categoria: 'Simples Nacional',
-      status: 'ativo',
-      conteudo: {
-        heroTitle: 'Sublimites do Simples Nacional',
-        heroSubtitle: 'Entenda os Sublimites e Evite Problemas com o Fisco!',
-        heroDescription: 'Orientação sobre sublimites do Simples Nacional...',
-        beneficios: [
-          'Análise personalizada do faturamento',
-          'Verificação de obrigações estaduais e municipais',
-          'Planejamento tributário estratégico'
-        ]
-      },
-      created_at: new Date().toISOString(),
-      updated_at: new Date().toISOString()
-    },
-    {
-      id: '4',
-      nome: 'Anexos',
-      titulo: 'Anexos Simples Nacional',
-      url: '/anexos',
-      categoria: 'Simples Nacional',
-      status: 'ativo',
-      conteudo: {
-        heroTitle: 'Anexos do Simples Nacional',
-        heroSubtitle: 'Descubra em Qual Anexo Sua Empresa se Enquadra!',
-        heroDescription: 'Identificação do anexo correto para sua empresa...',
-        beneficios: [
-          'Identificação correta do anexo',
-          'Cálculo exato dos tributos',
-          'Orientação sobre Fator "r"'
-        ]
-      },
-      created_at: new Date().toISOString(),
-      updated_at: new Date().toISOString()
-    },
-    {
-      id: '5',
-      nome: 'Calculo',
-      titulo: 'Cálculo Simples Nacional',
-      url: '/calculo',
-      categoria: 'Simples Nacional',
-      status: 'ativo',
-      conteudo: {
-        heroTitle: 'Cálculo do Simples Nacional',
-        heroSubtitle: 'Aprenda Como Calcular Corretamente!',
-        heroDescription: 'Orientação sobre cálculo do Simples Nacional...',
-        beneficios: [
-          'Cálculo correto conforme tabela oficial',
-          'Simulação de tributos',
-          'Análise do Fator "r"'
-        ]
-      },
-      created_at: new Date().toISOString(),
-      updated_at: new Date().toISOString()
-    },
-    {
-      id: '6',
-      nome: 'IR',
-      titulo: 'Imposto de Renda',
-      url: '/ir',
-      categoria: 'IR',
-      status: 'ativo',
-      conteudo: {
-        heroTitle: 'Imposto de Renda',
-        heroSubtitle: 'Declare Seu IR com Segurança!',
-        heroDescription: 'Especialistas em Declaração de IR para PF e PJ...',
-        beneficios: [
-          'Cálculo correto do Imposto de Renda devido',
-          'Planejamento tributário para redução legal',
-          'Assessoria completa para PF e PJ'
-        ]
-      },
-      created_at: new Date().toISOString(),
-      updated_at: new Date().toISOString()
-    },
-    {
-      id: '7',
-      nome: 'PIS/COFINS',
-      titulo: 'PIS/COFINS',
-      url: '/pis-cofins',
-      categoria: 'PIS/COFINS',
-      status: 'ativo',
-      conteudo: {
-        heroTitle: 'PIS/COFINS',
-        heroSubtitle: 'Otimize Sua Apuração e Aproveite Todos os Créditos!',
-        heroDescription: 'Especialistas em apuração de PIS e COFINS...',
-        beneficios: [
-          'Cálculo correto do PIS e COFINS devido',
-          'Identificação de créditos tributários',
-          'Orientação sobre regime cumulativo e não-cumulativo'
-        ]
-      },
-      created_at: new Date().toISOString(),
-      updated_at: new Date().toISOString()
-    },
-    {
-      id: '8',
-      nome: 'ICMS/ISS/IPI',
-      titulo: 'ICMS/ISS/IPI',
-      url: '/icms-iss-ipi',
-      categoria: 'ICMS/ISS/IPI',
-      status: 'ativo',
-      conteudo: {
-        heroTitle: 'ICMS/ISS/IPI',
-        heroSubtitle: 'Domine os Impostos com Nossa Consultoria!',
-        heroDescription: 'Especialistas em tributação estadual, municipal e federal...',
-        beneficios: [
-          'Cálculo correto de ICMS, ISS e IPI',
-          'Aproveitamento de créditos tributários',
-          'Orientação sobre substituição tributária'
-        ]
-      },
-      created_at: new Date().toISOString(),
-      updated_at: new Date().toISOString()
-    },
-    {
-      id: '9',
-      nome: 'Trabalho e Previdência',
-      titulo: 'Trabalho e Previdência',
-      url: '/trabalho-previdencia',
-      categoria: 'Trabalho e Previdência',
-      status: 'ativo',
-      conteudo: {
-        heroTitle: 'Trabalho e Previdência',
-        heroSubtitle: 'Mantenha Sua Empresa em Dia com as Obrigações!',
-        heroDescription: 'Especialistas em gestão trabalhista e previdenciária...',
-        beneficios: [
-          'Gestão completa do eSocial',
-          'Cálculo correto de FGTS e contribuições',
-          'Folha de pagamento sem erros'
-        ]
-      },
-      created_at: new Date().toISOString(),
-      updated_at: new Date().toISOString()
-    },
-    {
-      id: '10',
-      nome: 'Comercial',
-      titulo: 'Gestão Comercial',
-      url: '/comercial',
-      categoria: 'Comercial',
-      status: 'ativo',
-      conteudo: {
-        heroTitle: 'Gestão Comercial',
-        heroSubtitle: 'Organize Sua Documentação Comercial!',
-        heroDescription: 'Especialistas em gestão comercial e documentação fiscal...',
-        beneficios: [
-          'Gestão completa de documentos fiscais',
-          'Orientação sobre contratos comerciais',
-          'Regularização de notas fiscais'
-        ]
-      },
-      created_at: new Date().toISOString(),
-      updated_at: new Date().toISOString()
-    },
-    {
-      id: '11',
-      nome: 'SPED',
-      titulo: 'SPED',
-      url: '/sped',
-      categoria: 'SPED',
-      status: 'ativo',
-      conteudo: {
-        heroTitle: 'SPED - Sistema Público de Escrituração Digital',
-        heroSubtitle: 'Mantenha Todas as Obrigações SPED em Dia!',
-        heroDescription: 'Especialistas em todas as modalidades do SPED...',
-        beneficios: [
-          'Escrituração fiscal digital completa',
-          'Gestão de todas as obrigações SPED',
-          'Validação de arquivos antes do envio'
-        ]
-      },
-      created_at: new Date().toISOString(),
-      updated_at: new Date().toISOString()
-    },
-    {
-      id: '12',
-      nome: 'Declarações',
-      titulo: 'Gestão de Declarações',
-      url: '/declaracoes',
-      categoria: 'Declarações',
-      status: 'ativo',
-      conteudo: {
-        heroTitle: 'Gestão de Declarações',
-        heroSubtitle: 'Mantenha Todas as Declarações em Dia!',
-        heroDescription: 'Especialistas em gestão de declarações fiscais...',
-        beneficios: [
-          'Gestão completa de todas as declarações',
-          'Cálculo correto de tributos devidos',
-          'Entrega sempre dentro dos prazos'
-        ]
-      },
-      created_at: new Date().toISOString(),
-      updated_at: new Date().toISOString()
-    },
-    {
-      id: '13',
-      nome: 'IR Pessoa Física',
-      titulo: 'Imposto de Renda Pessoa Física',
-      url: '/ir/pessoa-fisica',
-      categoria: 'IR',
-      status: 'ativo',
-      conteudo: {
-        heroTitle: 'Imposto de Renda Pessoa Física',
-        heroSubtitle: 'Declare seu IR com Segurança!',
-        heroDescription: 'Declare seu IR com segurança e maximize sua restituição!',
-        beneficios: [
-          'Declaração completa de IR Pessoa Física',
-          'Maximização de deduções legais',
-          'Verificação de restituição'
-        ]
-      },
-      created_at: new Date().toISOString(),
-      updated_at: new Date().toISOString()
-    },
-    {
-      id: '14',
-      nome: 'IR Pessoa Jurídica',
-      titulo: 'Imposto de Renda Pessoa Jurídica',
-      url: '/ir/pessoa-juridica',
-      categoria: 'IR',
-      status: 'ativo',
-      conteudo: {
-        heroTitle: 'Imposto de Renda Pessoa Jurídica',
-        heroSubtitle: 'Mantenha Sua Empresa em Conformidade!',
-        heroDescription: 'Mantenha sua empresa em conformidade fiscal com nossa consultoria especializada em IR-PJ.',
-        beneficios: [
-          'Declaração de IR Pessoa Jurídica',
-          'Apuração correta do lucro tributável',
-          'Otimização da carga tributária'
-        ]
-      },
-      created_at: new Date().toISOString(),
-      updated_at: new Date().toISOString()
-    },
-    {
-      id: '15',
-      nome: 'PIS/COFINS Cumulativo',
-      titulo: 'PIS/COFINS Cumulativo',
-      url: '/pis-cofins/cumulativo',
-      categoria: 'PIS/COFINS',
-      status: 'ativo',
-      conteudo: {
-        heroTitle: 'PIS/COFINS Cumulativo',
-        heroSubtitle: 'Entenda e Aplique Corretamente!',
-        heroDescription: 'Entenda e aplique corretamente o regime cumulativo do PIS/COFINS.',
-        beneficios: [
-          'Apuração PIS/COFINS cumulativo',
-          'Cálculo correto das alíquotas',
-          'Verificação de regime aplicável'
-        ]
-      },
-      created_at: new Date().toISOString(),
-      updated_at: new Date().toISOString()
-    },
-    {
-      id: '16',
-      nome: 'eSocial',
-      titulo: 'eSocial - Escrituração Digital',
-      url: '/trabalho-previdencia/esocial',
-      categoria: 'Trabalho e Previdência',
-      status: 'ativo',
-      conteudo: {
-        heroTitle: 'eSocial - Escrituração Digital',
-        heroSubtitle: 'Implemente com Nossa Expertise!',
-        heroDescription: 'Implemente e gerencie o eSocial da sua empresa com nossa expertise.',
-        beneficios: [
-          'Implementação completa do eSocial',
-          'Gestão de eventos trabalhistas',
-          'Integração com folha de pagamento'
-        ]
-      },
-      created_at: new Date().toISOString(),
-      updated_at: new Date().toISOString()
-    },
-    {
-      id: '17',
-      nome: 'Busca Avançada',
-      titulo: 'Busca Avançada de Atos e Legislação',
-      url: '/busca-avancada',
-      categoria: 'Ferramentas',
-      status: 'ativo',
-      conteudo: {
-        heroTitle: 'Busca Avançada de Atos e Legislação',
-        heroSubtitle: 'Encontre Rapidamente o que Precisa!',
-        heroDescription: 'Encontre rapidamente leis, decretos, portarias e outras normas fiscais com nossa ferramenta de busca avançada.',
-        beneficios: [
-          'Busca por tipo de ato',
-          'Filtros por órgão emissor',
-          'Pesquisa por palavras-chave',
-          'Resultados organizados',
-          'Acesso rápido aos documentos'
-        ]
-      },
-      created_at: new Date().toISOString(),
-      updated_at: new Date().toISOString()
-    },
-    {
-      id: '18',
-      nome: 'Ferramentas Úteis',
-      titulo: 'Ferramentas Úteis',
-      url: '/ferramentas-uteis',
-      categoria: 'Ferramentas',
-      status: 'ativo',
-      conteudo: {
-        heroTitle: 'Ferramentas Úteis',
-        heroSubtitle: 'Facilite Seu Trabalho Fiscal!',
-        heroDescription: 'Acesse nossas calculadoras e simuladores para facilitar seu trabalho fiscal e contábil.',
-        beneficios: [
-          'Calculadora de INSS',
-          'Simulador Simples Nacional',
-          'Custo de Funcionário',
-          'Alíquotas por Estado',
-          'Códigos de Receita'
-        ]
-      },
-      created_at: new Date().toISOString(),
-      updated_at: new Date().toISOString()
-    },
-    {
-      id: '19',
-      nome: 'Publicações',
-      titulo: 'Publicações e Legislações',
-      url: '/publicacoes',
-      categoria: 'Conteúdo',
-      status: 'ativo',
-      conteudo: {
-        heroTitle: 'Publicações e Legislações',
-        heroSubtitle: 'Mantenha-se Sempre Atualizado!',
-        heroDescription: 'Acesse manuais, guias e legislações atualizadas para se manter sempre informado.',
-        beneficios: [
-          'Manual do eSocial 2024',
-          'Guia SPED Fiscal',
-          'Tabela de Códigos NCM',
-          'Modelos de DARF',
-          'Legislações Recentes'
-        ]
-      },
-      created_at: new Date().toISOString(),
-      updated_at: new Date().toISOString()
-    }
-  ]);
+const PAGINAS_LABELS: Record<string, string> = {
+  'home': '🏠 Página Inicial',
+  'quem-somos': '👥 Quem Somos',
+  'contato': '📞 Contato',
+  'cursos': '🎓 Cursos',
+  'ferramentas': '🔧 Ferramentas',
+  'planos': '💳 Planos',
+  'suporte': '🆘 Suporte',
+  'newsletter': '📧 Newsletter',
+  'consultoria': '💼 Consultoria',
+  'softwares': '💻 Softwares',
+  'publicacoes': '📚 Publicações',
+  'calendario-fiscal': '📅 Calendário Fiscal',
+  'desenquadramento': '📋 Desenquadramento',
+  'optantes': '✅ Optantes',
+  'sublimites': '📊 Sublimites',
+  'anexos': '📎 Anexos',
+  'calculo': '🧮 Cálculo',
+  'ir': '💰 Imposto de Renda',
+  'pis-cofins': '📝 PIS/COFINS',
+  'icms-iss-ipi': '🏛️ ICMS/ISS/IPI',
+  'trabalho-previdencia': '👷 Trabalho e Previdência',
+  'comercial': '🏢 Comercial',
+  'sped': '💾 SPED',
+  'declaracoes': '📄 Declarações',
+  'busca-avancada': '🔍 Busca Avançada',
+  'ferramentas-uteis': '🛠️ Ferramentas Úteis',
+  'reforma-previdencia': '⚖️ Reforma Previdência',
+  'contabilidade': '📒 Contabilidade',
+  'comunidade': '🤝 Comunidade',
+  'ead': '🖥️ EAD',
+  'presencial': '🏫 Presencial',
+  'in-company': '🏭 In Company',
+};
 
-  const [filteredPaginas, setFilteredPaginas] = useState<PaginaConteudo[]>(paginas);
-  const [selectedPagina, setSelectedPagina] = useState<PaginaConteudo | null>(null);
-  const [detailsOpen, setDetailsOpen] = useState(false);
-  const [editOpen, setEditOpen] = useState(false);
+const PaginasManager = () => {
+  const [conteudos, setConteudos] = useState<PaginaConteudo[]>([]);
+  const [loading, setLoading] = useState(true);
   const [searchTerm, setSearchTerm] = useState("");
-  const [categoryFilter, setCategoryFilter] = useState<string>("todas");
-  const [formData, setFormData] = useState({
-    nome: "",
-    titulo: "",
-    heroTitle: "",
-    heroSubtitle: "",
-    heroDescription: "",
-    beneficios: "",
-    servicos: "",
-    diferenciais: "",
-    depoimentoTexto: "",
-    depoimentoAutor: ""
+  const [filterPagina, setFilterPagina] = useState("todas");
+  const [expandedPages, setExpandedPages] = useState<Set<string>>(new Set());
+  const [modalOpen, setModalOpen] = useState(false);
+  const [editing, setEditing] = useState<PaginaConteudo | null>(null);
+  const [customPagina, setCustomPagina] = useState(false);
+  const [form, setForm] = useState({
+    pagina: '', secao: '', titulo: '', subtitulo: '',
+    conteudo: '', imagem_url: '', ordem: 0, ativo: true
   });
 
-  // Filtros
-  useEffect(() => {
-    let filtered = paginas;
+  useEffect(() => { loadConteudos(); }, []);
 
-    if (searchTerm) {
-      filtered = filtered.filter(p => 
-        p.nome.toLowerCase().includes(searchTerm.toLowerCase()) ||
-        p.titulo.toLowerCase().includes(searchTerm.toLowerCase())
-      );
+  const loadConteudos = async () => {
+    setLoading(true);
+    const { data, error } = await supabase
+      .from('paginas_conteudo')
+      .select('*')
+      .order('pagina')
+      .order('ordem', { ascending: true });
+    if (data) setConteudos(data);
+    if (error) toast({ title: "Erro ao carregar", description: error.message, variant: "destructive" });
+    setLoading(false);
+  };
+
+  const openModal = (item?: PaginaConteudo) => {
+    setCustomPagina(false);
+    if (item) {
+      setEditing(item);
+      setForm({
+        pagina: item.pagina, secao: item.secao,
+        titulo: item.titulo || '', subtitulo: item.subtitulo || '',
+        conteudo: item.conteudo || '', imagem_url: item.imagem_url || '',
+        ordem: item.ordem || 0, ativo: item.ativo !== false
+      });
+    } else {
+      setEditing(null);
+      setForm({ pagina: '', secao: '', titulo: '', subtitulo: '', conteudo: '', imagem_url: '', ordem: 0, ativo: true });
     }
+    setModalOpen(true);
+  };
 
-    if (categoryFilter !== "todas") {
-      filtered = filtered.filter(p => p.categoria === categoryFilter);
+  const saveConteudo = async () => {
+    if (!form.pagina || !form.secao) {
+      toast({ title: "Preencha página e seção", variant: "destructive" });
+      return;
     }
-
-    setFilteredPaginas(filtered);
-  }, [searchTerm, categoryFilter, paginas]);
-
-  const handleEdit = (pagina: PaginaConteudo) => {
-    setSelectedPagina(pagina);
-    setFormData({
-      nome: pagina.nome,
-      titulo: pagina.titulo,
-      heroTitle: pagina.conteudo.heroTitle,
-      heroSubtitle: pagina.conteudo.heroSubtitle,
-      heroDescription: pagina.conteudo.heroDescription,
-      beneficios: pagina.conteudo.beneficios.join('\n'),
-      servicos: pagina.conteudo.servicos?.join('\n') || '',
-      diferenciais: pagina.conteudo.diferenciais?.join('\n') || '',
-      depoimentoTexto: pagina.conteudo.depoimento?.texto || '',
-      depoimentoAutor: pagina.conteudo.depoimento?.autor || ''
-    });
-    setEditOpen(true);
-  };
-
-  const handleSubmit = (e: React.FormEvent) => {
-    e.preventDefault();
-    
-    if (selectedPagina) {
-      const updatedPagina: PaginaConteudo = {
-        ...selectedPagina,
-        nome: formData.nome,
-        titulo: formData.titulo,
-        conteudo: {
-          heroTitle: formData.heroTitle,
-          heroSubtitle: formData.heroSubtitle,
-          heroDescription: formData.heroDescription,
-          beneficios: formData.beneficios.split('\n').filter(b => b.trim()),
-          servicos: formData.servicos ? formData.servicos.split('\n').filter(s => s.trim()) : undefined,
-          diferenciais: formData.diferenciais ? formData.diferenciais.split('\n').filter(d => d.trim()) : undefined,
-          depoimento: formData.depoimentoTexto ? {
-            texto: formData.depoimentoTexto,
-            autor: formData.depoimentoAutor
-          } : undefined
-        },
-        updated_at: new Date().toISOString()
-      };
-
-      setPaginas(prev => prev.map(p => p.id === selectedPagina.id ? updatedPagina : p));
-      toast({ title: "Página atualizada com sucesso!" });
-      setEditOpen(false);
+    const payload = {
+      pagina: form.pagina, secao: form.secao,
+      titulo: form.titulo || null, subtitulo: form.subtitulo || null,
+      conteudo: form.conteudo || null, imagem_url: form.imagem_url || null,
+      ordem: form.ordem, ativo: form.ativo,
+      updated_at: new Date().toISOString()
+    };
+    let error;
+    if (editing) {
+      ({ error } = await supabase.from('paginas_conteudo').update(payload).eq('id', editing.id));
+    } else {
+      ({ error } = await supabase.from('paginas_conteudo').insert(payload));
     }
+    if (error) toast({ title: "Erro", description: error.message, variant: "destructive" });
+    else { toast({ title: editing ? "Conteúdo atualizado!" : "Conteúdo criado!" }); setModalOpen(false); loadConteudos(); }
   };
 
-  const toggleStatus = (id: string) => {
-    setPaginas(prev => prev.map(p => 
-      p.id === id ? { ...p, status: p.status === 'ativo' ? 'inativo' : 'ativo' } : p
-    ));
-    toast({ title: "Status da página atualizado!" });
+  const deleteConteudo = async (id: string) => {
+    if (!confirm("Excluir este conteúdo de página?")) return;
+    const { error } = await supabase.from('paginas_conteudo').delete().eq('id', id);
+    if (error) toast({ title: "Erro", description: error.message, variant: "destructive" });
+    else { toast({ title: "Excluído!" }); loadConteudos(); }
   };
 
-  const formatDate = (dateString: string) => {
-    return new Date(dateString).toLocaleDateString('pt-BR', {
-      day: '2-digit',
-      month: '2-digit',
-      year: 'numeric',
-      hour: '2-digit',
-      minute: '2-digit'
-    });
+  const toggleAtivo = async (item: PaginaConteudo) => {
+    const { error } = await supabase.from('paginas_conteudo')
+      .update({ ativo: !item.ativo, updated_at: new Date().toISOString() })
+      .eq('id', item.id);
+    if (!error) loadConteudos();
   };
 
-  // Atualizar o Select de categorias para incluir todas as novas categorias
-  const categorias = [
-    "todas", 
-    "Simples Nacional", 
-    "IR", 
-    "PIS/COFINS", 
-    "ICMS/ISS/IPI", 
-    "Trabalho e Previdência", 
-    "Comercial", 
-    "SPED", 
-    "Declarações",
-    "Contabilidade",
-    "Reforma da Previdência",
-    "Ferramentas",
-    "Conteúdo"
-  ];
+  const togglePage = (pagina: string) => {
+    const next = new Set(expandedPages);
+    if (next.has(pagina)) next.delete(pagina); else next.add(pagina);
+    setExpandedPages(next);
+  };
+
+  const paginas = [...new Set(conteudos.map(c => c.pagina))].sort();
+  const displayPaginas = filterPagina === 'todas' ? paginas : paginas.filter(p => p === filterPagina);
+
+  const filtered = conteudos.filter(c =>
+    (c.titulo || '').toLowerCase().includes(searchTerm.toLowerCase()) ||
+    c.pagina.toLowerCase().includes(searchTerm.toLowerCase()) ||
+    c.secao.toLowerCase().includes(searchTerm.toLowerCase())
+  );
+
+  if (loading) {
+    return <div className="flex items-center justify-center py-12"><div className="animate-spin rounded-full h-8 w-8 border-b-2 border-primary"></div></div>;
+  }
 
   return (
     <div className="space-y-6">
       <div className="flex items-center justify-between">
-        <h2 className="text-2xl font-bold">Gestão de Páginas</h2>
-        <Badge variant="outline" className="text-lg px-3 py-1">
-          {filteredPaginas.length} páginas
-        </Badge>
+        <h2 className="text-xl font-semibold flex items-center gap-2">
+          <Layout className="w-5 h-5" />
+          Gestão de Páginas ({conteudos.length} seções)
+        </h2>
+        <Button onClick={() => openModal()}>
+          <Plus className="w-4 h-4 mr-2" /> Nova Seção
+        </Button>
       </div>
 
-      {/* Filtros */}
-      <div className="flex flex-col md:flex-row gap-4">
+      <div className="flex gap-4">
         <div className="relative flex-1">
-          <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400 w-4 h-4" />
-          <Input
-            placeholder="Pesquisar por nome ou título..."
-            value={searchTerm}
-            onChange={(e) => setSearchTerm(e.target.value)}
-            className="pl-10"
-          />
+          <Search className="absolute left-3 top-1/2 -translate-y-1/2 text-muted-foreground w-4 h-4" />
+          <Input placeholder="Buscar por título, página ou seção..." value={searchTerm} onChange={e => setSearchTerm(e.target.value)} className="pl-10" />
         </div>
-        <Select value={categoryFilter} onValueChange={setCategoryFilter}>
-          <SelectTrigger className="w-48">
-            <Filter className="w-4 h-4 mr-2" />
-            <SelectValue placeholder="Filtrar por categoria" />
+        <Select value={filterPagina} onValueChange={setFilterPagina}>
+          <SelectTrigger className="w-56">
+            <Globe className="w-4 h-4 mr-2" />
+            <SelectValue placeholder="Todas as páginas" />
           </SelectTrigger>
           <SelectContent>
-            {categorias.map(categoria => (
-              <SelectItem key={categoria} value={categoria}>
-                {categoria === "todas" ? "Todas as categorias" : categoria}
-              </SelectItem>
+            <SelectItem value="todas">Todas as Páginas</SelectItem>
+            {paginas.map(p => (
+              <SelectItem key={p} value={p}>{PAGINAS_LABELS[p] || p}</SelectItem>
             ))}
           </SelectContent>
         </Select>
       </div>
 
-      {/* Lista de Páginas */}
-      <div className="grid gap-4">
-        {filteredPaginas.map((pagina) => (
-          <Card key={pagina.id} className="hover:shadow-lg transition-shadow">
-            <CardContent className="p-6">
-              <div className="flex items-start justify-between">
-                <div className="flex-1">
-                  <div className="flex items-center gap-3 mb-2">
-                    <Globe className="w-5 h-5 text-blue-600" />
-                    <h3 className="font-semibold text-lg">{pagina.titulo}</h3>
-                    <Badge 
-                      className={pagina.status === 'ativo' ? 'bg-green-100 text-green-800' : 'bg-gray-100 text-gray-800'}
-                    >
-                      {pagina.status}
-                    </Badge>
-                  </div>
-                  <div className="grid md:grid-cols-2 gap-2 text-sm text-gray-600 mb-3">
-                    <p><strong>URL:</strong> {pagina.url}</p>
-                    <p><strong>Categoria:</strong> {pagina.categoria}</p>
-                    <p><strong>Última atualização:</strong> {formatDate(pagina.updated_at)}</p>
-                    <p><strong>Benefícios:</strong> {pagina.conteudo.beneficios.length} itens</p>
-                  </div>
-                  <p className="text-sm text-gray-700 line-clamp-2">
-                    {pagina.conteudo.heroDescription}
-                  </p>
-                </div>
-                <div className="flex flex-col gap-2 ml-4">
-                  <Button
-                    variant="outline"
-                    size="sm"
-                    onClick={() => {
-                      setSelectedPagina(pagina);
-                      setDetailsOpen(true);
-                    }}
-                  >
-                    <Eye className="w-4 h-4 mr-1" />
-                    Visualizar
-                  </Button>
-                  <Button
-                    variant="outline"
-                    size="sm"
-                    onClick={() => handleEdit(pagina)}
-                  >
-                    <Pencil className="w-4 h-4 mr-1" />
-                    Editar
-                  </Button>
-                  <Button
-                    variant={pagina.status === 'ativo' ? 'destructive' : 'default'}
-                    size="sm"
-                    onClick={() => toggleStatus(pagina.id)}
-                  >
-                    {pagina.status === 'ativo' ? 'Desativar' : 'Ativar'}
-                  </Button>
-                </div>
-              </div>
-            </CardContent>
-          </Card>
-        ))}
-      </div>
+      {displayPaginas.map(pagina => {
+        const sections = filtered.filter(c => c.pagina === pagina);
+        if (sections.length === 0) return null;
+        const isExpanded = expandedPages.has(pagina);
 
-      {filteredPaginas.length === 0 && (
-        <Card>
-          <CardContent className="p-8 text-center">
-            <p className="text-gray-500">Nenhuma página encontrada.</p>
-          </CardContent>
-        </Card>
+        return (
+          <Card key={pagina}>
+            <CardHeader className="cursor-pointer hover:bg-muted/50 transition-colors" onClick={() => togglePage(pagina)}>
+              <div className="flex items-center justify-between">
+                <CardTitle className="text-lg flex items-center gap-2">
+                  {isExpanded ? <ChevronDown className="w-5 h-5" /> : <ChevronRight className="w-5 h-5" />}
+                  {PAGINAS_LABELS[pagina] || pagina}
+                  <Badge variant="secondary">{sections.length} seções</Badge>
+                </CardTitle>
+                <Badge variant="outline" className="text-xs">/{pagina === 'home' ? '' : pagina}</Badge>
+              </div>
+            </CardHeader>
+            {isExpanded && (
+              <CardContent>
+                <Table>
+                  <TableHeader>
+                    <TableRow>
+                      <TableHead>Seção</TableHead>
+                      <TableHead>Título</TableHead>
+                      <TableHead>Subtítulo</TableHead>
+                      <TableHead>Ativo</TableHead>
+                      <TableHead>Ordem</TableHead>
+                      <TableHead>Atualizado</TableHead>
+                      <TableHead>Ações</TableHead>
+                    </TableRow>
+                  </TableHeader>
+                  <TableBody>
+                    {sections.map(s => (
+                      <TableRow key={s.id}>
+                        <TableCell><Badge variant="outline">{s.secao}</Badge></TableCell>
+                        <TableCell className="font-medium max-w-xs truncate">{s.titulo || '—'}</TableCell>
+                        <TableCell className="max-w-xs truncate text-muted-foreground">{s.subtitulo || '—'}</TableCell>
+                        <TableCell>
+                          <Switch checked={s.ativo !== false} onCheckedChange={() => toggleAtivo(s)} />
+                        </TableCell>
+                        <TableCell>{s.ordem}</TableCell>
+                        <TableCell className="text-sm text-muted-foreground">
+                          {new Date(s.updated_at).toLocaleDateString('pt-BR')}
+                        </TableCell>
+                        <TableCell>
+                          <div className="flex gap-1">
+                            <Button variant="outline" size="sm" onClick={() => openModal(s)}><Edit className="w-3 h-3" /></Button>
+                            <Button variant="destructive" size="sm" onClick={() => deleteConteudo(s.id)}><Trash2 className="w-3 h-3" /></Button>
+                          </div>
+                        </TableCell>
+                      </TableRow>
+                    ))}
+                  </TableBody>
+                </Table>
+              </CardContent>
+            )}
+          </Card>
+        );
+      })}
+
+      {displayPaginas.length === 0 && (
+        <Card><CardContent className="py-12 text-center text-muted-foreground">Nenhuma página encontrada</CardContent></Card>
       )}
 
-      {/* Modal de Detalhes */}
-      <Dialog open={detailsOpen} onOpenChange={setDetailsOpen}>
-        <DialogContent className="max-w-4xl max-h-[80vh] overflow-y-auto">
+      {/* Modal */}
+      <Dialog open={modalOpen} onOpenChange={setModalOpen}>
+        <DialogContent className="max-w-2xl max-h-[90vh] overflow-y-auto">
           <DialogHeader>
-            <DialogTitle>Detalhes da Página</DialogTitle>
+            <DialogTitle>{editing ? 'Editar Seção de Página' : 'Nova Seção de Página'}</DialogTitle>
           </DialogHeader>
-          {selectedPagina && (
-            <div className="space-y-4">
-              <div className="grid md:grid-cols-2 gap-4">
-                <div>
-                  <h4 className="font-semibold mb-1">Nome</h4>
-                  <p className="text-gray-700">{selectedPagina.nome}</p>
-                </div>
-                <div>
-                  <h4 className="font-semibold mb-1">Título</h4>
-                  <p className="text-gray-700">{selectedPagina.titulo}</p>
-                </div>
-                <div>
-                  <h4 className="font-semibold mb-1">URL</h4>
-                  <p className="text-gray-700">{selectedPagina.url}</p>
-                </div>
-                <div>
-                  <h4 className="font-semibold mb-1">Categoria</h4>
-                  <Badge>{selectedPagina.categoria}</Badge>
-                </div>
+          <div className="space-y-4">
+            <div className="grid grid-cols-2 gap-4">
+              <div>
+                <Label>Página *</Label>
+                {customPagina ? (
+                  <div className="flex gap-2">
+                    <Input placeholder="nome-da-pagina" value={form.pagina} onChange={e => setForm({ ...form, pagina: e.target.value })} />
+                    <Button variant="outline" size="sm" onClick={() => setCustomPagina(false)}>Lista</Button>
+                  </div>
+                ) : (
+                  <Select value={form.pagina} onValueChange={v => {
+                    if (v === '__custom__') { setCustomPagina(true); setForm({ ...form, pagina: '' }); }
+                    else setForm({ ...form, pagina: v });
+                  }}>
+                    <SelectTrigger><SelectValue placeholder="Selecione a página" /></SelectTrigger>
+                    <SelectContent>
+                      {Object.entries(PAGINAS_LABELS).map(([key, label]) => (
+                        <SelectItem key={key} value={key}>{label}</SelectItem>
+                      ))}
+                      <SelectItem value="__custom__">+ Outra página</SelectItem>
+                    </SelectContent>
+                  </Select>
+                )}
               </div>
               <div>
-                <h4 className="font-semibold mb-2">Conteúdo Hero</h4>
-                <div className="bg-gray-50 p-4 rounded-lg space-y-2">
-                  <p><strong>Título:</strong> {selectedPagina.conteudo.heroTitle}</p>
-                  <p><strong>Subtítulo:</strong> {selectedPagina.conteudo.heroSubtitle}</p>
-                  <p><strong>Descrição:</strong> {selectedPagina.conteudo.heroDescription}</p>
-                </div>
+                <Label>Seção *</Label>
+                <Input value={form.secao} onChange={e => setForm({ ...form, secao: e.target.value })} placeholder="ex: hero, missao, info" />
               </div>
+            </div>
+            <div>
+              <Label>Título</Label>
+              <Input value={form.titulo} onChange={e => setForm({ ...form, titulo: e.target.value })} />
+            </div>
+            <div>
+              <Label>Subtítulo</Label>
+              <Input value={form.subtitulo} onChange={e => setForm({ ...form, subtitulo: e.target.value })} />
+            </div>
+            <div>
+              <Label>Conteúdo</Label>
+              <Textarea value={form.conteudo} onChange={e => setForm({ ...form, conteudo: e.target.value })} rows={6} placeholder="Texto principal da seção..." />
+            </div>
+            <div>
+              <Label>URL da Imagem</Label>
+              <Input value={form.imagem_url} onChange={e => setForm({ ...form, imagem_url: e.target.value })} placeholder="https://..." />
+            </div>
+            <div className="grid grid-cols-2 gap-4">
               <div>
-                <h4 className="font-semibold mb-2">Benefícios</h4>
-                <ul className="list-disc list-inside space-y-1">
-                  {selectedPagina.conteudo.beneficios.map((beneficio, index) => (
-                    <li key={index} className="text-gray-700">{beneficio}</li>
-                  ))}
-                </ul>
+                <Label>Ordem de exibição</Label>
+                <Input type="number" value={form.ordem} onChange={e => setForm({ ...form, ordem: parseInt(e.target.value) || 0 })} />
+              </div>
+              <div className="flex items-center gap-3 pt-6">
+                <Switch checked={form.ativo} onCheckedChange={v => setForm({ ...form, ativo: v })} />
+                <Label>Seção ativa</Label>
               </div>
             </div>
-          )}
-        </DialogContent>
-      </Dialog>
-
-      {/* Modal de Edição */}
-      <Dialog open={editOpen} onOpenChange={setEditOpen}>
-        <DialogContent className="max-w-4xl max-h-[80vh] overflow-y-auto">
-          <DialogHeader>
-            <DialogTitle>Editar Página</DialogTitle>
-          </DialogHeader>
-          <form onSubmit={handleSubmit} className="space-y-4">
-            <div className="grid md:grid-cols-2 gap-4">
-              <div>
-                <label className="block text-sm font-medium mb-1">Nome</label>
-                <Input
-                  value={formData.nome}
-                  onChange={(e) => setFormData({...formData, nome: e.target.value})}
-                  required
-                />
-              </div>
-              <div>
-                <label className="block text-sm font-medium mb-1">Título</label>
-                <Input
-                  value={formData.titulo}
-                  onChange={(e) => setFormData({...formData, titulo: e.target.value})}
-                  required
-                />
-              </div>
-            </div>
-            
-            <div>
-              <label className="block text-sm font-medium mb-1">Título Hero</label>
-              <Input
-                value={formData.heroTitle}
-                onChange={(e) => setFormData({...formData, heroTitle: e.target.value})}
-                required
-              />
-            </div>
-            
-            <div>
-              <label className="block text-sm font-medium mb-1">Subtítulo Hero</label>
-              <Input
-                value={formData.heroSubtitle}
-                onChange={(e) => setFormData({...formData, heroSubtitle: e.target.value})}
-                required
-              />
-            </div>
-            
-            <div>
-              <label className="block text-sm font-medium mb-1">Descrição Hero</label>
-              <Textarea
-                value={formData.heroDescription}
-                onChange={(e) => setFormData({...formData, heroDescription: e.target.value})}
-                rows={3}
-                required
-              />
-            </div>
-            
-            <div>
-              <label className="block text-sm font-medium mb-1">Benefícios (um por linha)</label>
-              <Textarea
-                value={formData.beneficios}
-                onChange={(e) => setFormData({...formData, beneficios: e.target.value})}
-                rows={5}
-                placeholder="Digite cada benefício em uma nova linha"
-              />
-            </div>
-            
-            <div className="flex space-x-2">
-              <Button type="submit" className="flex-1">
-                Salvar Alterações
+            <div className="flex gap-2 pt-2">
+              <Button onClick={saveConteudo} className="flex-1">
+                <Save className="w-4 h-4 mr-2" /> {editing ? 'Atualizar' : 'Criar'}
               </Button>
-              <Button 
-                type="button" 
-                variant="outline" 
-                onClick={() => setEditOpen(false)}
-              >
-                Cancelar
+              <Button variant="outline" onClick={() => setModalOpen(false)}>
+                <X className="w-4 h-4 mr-2" /> Cancelar
               </Button>
             </div>
-          </form>
+          </div>
         </DialogContent>
       </Dialog>
     </div>
