@@ -14,6 +14,56 @@ export type Database = {
   }
   public: {
     Tables: {
+      assinaturas: {
+        Row: {
+          created_at: string
+          data_fim: string | null
+          data_inicio: string | null
+          external_payment_id: string | null
+          gateway: string | null
+          id: string
+          plano_id: string | null
+          status: string
+          updated_at: string
+          user_id: string
+          valor_pago: number | null
+        }
+        Insert: {
+          created_at?: string
+          data_fim?: string | null
+          data_inicio?: string | null
+          external_payment_id?: string | null
+          gateway?: string | null
+          id?: string
+          plano_id?: string | null
+          status?: string
+          updated_at?: string
+          user_id: string
+          valor_pago?: number | null
+        }
+        Update: {
+          created_at?: string
+          data_fim?: string | null
+          data_inicio?: string | null
+          external_payment_id?: string | null
+          gateway?: string | null
+          id?: string
+          plano_id?: string | null
+          status?: string
+          updated_at?: string
+          user_id?: string
+          valor_pago?: number | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "assinaturas_plano_id_fkey"
+            columns: ["plano_id"]
+            isOneToOne: false
+            referencedRelation: "planos_assinatura"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
       conteudos: {
         Row: {
           autor_id: string | null
